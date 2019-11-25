@@ -10,7 +10,8 @@ import React from 'react';
 import {
   Text,
   View,
-  Button
+  Button,
+  StyleSheet,
 } from 'react-native';
 import { 
   createAppContainer
@@ -19,11 +20,18 @@ import {
   createBottomTabNavigator 
 } from 'react-navigation-tabs';
 
+const styles = StyleSheet.create({
+  mainText: {
+    fontSize: 35,
+    color: 'hotpink',
+  }
+});
+
 class MyClubsScreen extends React.Component {
   render() {
     return (
       <View>
-        <Text>This is the My Clubs Screen!</Text>
+        <Text style={styles.mainText}>This is the My Clubs Screen!</Text>
         <Button title='Add Clubs (goes to Club Directory)'
         onPress={() => this.props.navigation.navigate('ClubDirectory')}/>
       </View>
@@ -35,7 +43,7 @@ class ClubDirectoryScreen extends React.Component {
   render() {
     return (
       <View>
-        <Text>This is the Club Directory Screen!</Text>
+        <Text style={styles.mainText}>This is the Club Directory Screen!</Text>
       </View>
     );
   }
@@ -45,7 +53,7 @@ class SettingsScreen extends React.Component {
   render() {
     return (
       <View>
-        <Text>This is the Settings Screen!</Text>
+        <Text style={styles.mainText}>This is the Settings Screen!</Text>
       </View>
     );
   }
