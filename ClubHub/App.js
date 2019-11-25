@@ -23,6 +23,7 @@ import {
 const styles = StyleSheet.create({
   mainText: {
     fontSize: 40,
+    fontSize: 35,
     color: 'hotpink',
   }
 });

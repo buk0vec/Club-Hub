@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fce98540-2576-4394-8eee-fcdb326c59f5" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/ClubHub/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/ClubHub/App.js" afterDir="false" />
-    </list>
+    <list default="true" id="fce98540-2576-4394-8eee-fcdb326c59f5" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,9 +22,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane" />
       <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="ProjectPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
