@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "777356333375",
+    "firebase_url": "https://clubhub2020.firebaseio.com",
+    "project_id": "clubhub2020",
+    "storage_bucket": "clubhub2020.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:777356333375:android:7768363957a999fe94038a",
+        "android_client_info": {
+          "package_name": "com.scrubclub.clubhub"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "777356333375-jp9gvl27b03injjfd864gt5abhv75bk5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAR3sDKtPOnb1M_D8uf58B8ty4wXGiahXg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "777356333375-jp9gvl27b03injjfd864gt5abhv75bk5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,4 +1,4 @@
-package com.clubhub;
+package com.scrubclub.clubhub;
 
 import com.facebook.react.ReactActivity;
 
