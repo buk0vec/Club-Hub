@@ -13,12 +13,13 @@ import {
   Button,
   StyleSheet
 } from 'react-native';
-import { 
+import {
   createAppContainer
 } from 'react-navigation';
 import { 
   createBottomTabNavigator 
 } from 'react-navigation-tabs';
+
 
 const styles = StyleSheet.create({
   mainText: {
