@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "777356333375-ngtsr2dej8ejijfm9pe0gd9mvbarkq3h.apps.googleusercontent.com",
+          "client_id": "777356333375-fct70afcbd823i6td88vjacqrb1u6mmo.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.scrubclub.clubhub",
-            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+            "certificate_hash": "435e7d4fd7151ffaf013713d4e6efe2a6fb2abe2"
           }
         },
         {
