@@ -19,7 +19,8 @@ import {
 import { 
   createBottomTabNavigator 
 } from 'react-navigation-tabs';
-import firebase from '@react-native-firebase/app';
+import firestore from '@react-native-firebase/firestore';
+import firebase from '@react-native-firebase/app'
 
 const styles = StyleSheet.create({
   mainText: {
