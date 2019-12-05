@@ -1,4 +1,0 @@
-# Referenced at C:\Users\Nick\Documents\Code\Club-Hub\ClubHub\android\app\build\intermediates\merged_manifests\debug\AndroidManifest.xml:18
--keep class androidx.core.app.CoreComponentFactory { <init>(); }
-# Referenced at C:\Users\Nick\Documents\Code\Club-Hub\ClubHub\android\app\build\intermediates\merged_manifests\debug\AndroidManifest.xml:18
--keep class com.scrubclub.clubhub.MainApplication { <init>(); }
