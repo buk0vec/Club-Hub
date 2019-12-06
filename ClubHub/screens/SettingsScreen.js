@@ -5,8 +5,6 @@ import {
   StyleSheet
 } from 'react-native';
 
-import * as firebase from 'firebase';
-import 'firebase/firestore';
 
 const styles = StyleSheet.create({
   mainText: {
@@ -28,34 +26,10 @@ const firebaseConfig = {
 };
 
 export default class SettingsScreen extends React.Component {
-  constructor(props) {
-    super(props);
-    if (!firebase.apps.length) {
-      let app = firebase.initializeApp(firebaseConfig);
-    }
-    let app = firebase.app();
-    let db = app.firestore();
-    console.log("Pulling...");
-    
-    let cityRef = db.collection('clubs').doc('6cnht66zmzVnAZqK6NYj');
-    let getDoc = cityRef.get()
-      .then(doc => {
-    if (!doc.exists) {
-      console.log('No such document!');
-    } else {
-      console.log('Document data:', doc.data());
-    }
-  })
-  .catch(err => {
-    console.log('Error getting document', err);
-  });
-
-  }
   render() {
     return (
       <View>
         <Text style={styles.mainText}>This is the Settings Screen!</Text>
-        
       </View>
     );
   }
