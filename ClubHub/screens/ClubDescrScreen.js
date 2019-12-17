@@ -46,11 +46,10 @@ const firebaseConfig = {
   measurementId: "G-T0G1E3NW8T"
 };
 
-export default class ClubDirectoryScreen extends React.Component {
+export default class ClubDescrScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      clubs: [],
       refreshing: true
     };
     YellowBox.ignoreWarnings(['Setting a timer']);
@@ -63,79 +62,53 @@ export default class ClubDirectoryScreen extends React.Component {
   componentDidMount() {
     this.onRefresh();
   }
-  /*
-  componentDidMount() {
-    this.setState({
-      clubs: [],
-      refreshing: true
-    });
-    if (!firebase.apps.length) {
-      let app = firebase.initializeApp(firebaseConfig);
-    }
-    let tempIds = [];
-    let app = firebase.app();
-    let db = app.firestore();
-    console.log("Pulling...");
-    
-    let clubsRef = db.collection('clubs');
-
-    let getNames = clubsRef.get()
-      .then(snapshot => {
-        snapshot.forEach(doc => {
-          this.setState({
-            clubs: [...this.state.clubs, {id: doc.id, name: doc.data().clubName}],
-          });
-        })
-        this.setState({
-          refreshing: false
-        });
-        console.log("Clubs set, ", this.state.clubs);
-      })
-      .catch(err => {
-        console.log('Error getting document', err);
-      });
-  }
-  */
-  onClubPress(item){
-    Alert.alert('Club Pressed!', 'Club ID: ' + item.id)
-  }
   Separator() {
     return <View style={styles.separator} />;
   }
   onRefresh() {
     this.setState({
-      clubs: [],
+      // clubName,
+      // day,
+      // roomNumber,
+      // shortDescr,
+      // when,
+      data,
       refreshing: true
     });
     if (!firebase.apps.length) {
-      let app = firebase.initializeApp(firebaseConfig);
+      let app = firebase.initializeApp(firebaseConfig); //connecting firebase to app
     }
-    let tempClubs = [];
     let app = firebase.app();
     let db = app.firestore();
     console.log("Pulling...");
     
-    let clubsRef = db.collection('clubs');
+    let club = db.doc('6cnht66zmzVnAZqK6NYj');
 
-    let getNames = clubsRef.get()
-      .then(snapshot => {
-        snapshot.forEach(doc => {
-            tempClubs.push({id: doc.id, name: doc.data().clubName});
-        })
+    // let getName = club.get('clubName')
+    // let getDay = club.get('day')
+    // let getRoomNumber = club.get('roomNumber')
+    // let getDescr = club.get('shortDesc')
+    // let getWhen = club.get('when')
+    let getData = club.get()
+      .then(function(snapshot)
         this.setState({
-          clubs: [...tempClubs],
+          data = snapshot.val();
+          //data.clubName = clubName(firebase)
+          //data.day = day(firebas)...
           refreshing: false
         });
-        console.log("Clubs set, ", this.state.clubs);
+        //could put test case in console.log here
       })
       .catch(err => {
         console.log('Error getting document', err);
-      });
+      }
   }
+
+//still need work on this
   render() {
-    let ClubList;
+    let descr;
     if(this.state.refreshing){
-      ClubList = <Text style={styles.clubText}>Loading...</Text>;
+      descr = <Text style={styles.clubText}>Loading...</Text>;
     }
     else {
       ClubList = <FlatList 
@@ -155,7 +128,7 @@ export default class ClubDirectoryScreen extends React.Component {
             <RefreshControl 
               refreshing={this.state.refreshing}
               onRefresh={() => this.onRefresh()}
-            />
+              />
           } 
         />;
     }
