@@ -49,15 +49,13 @@ const firebaseConfig = {
 export default class ClubDescrScreen extends React.Component {
   constructor(props) {
     super(props);
+    const {navigation} = this.props;
     this.state = {
-      // clubName,
-      // day,
-      // roomNumber,
-      // shortDescr,
-      // when,
+      clubId: navigation.getParam('clubId'),
       data: [],
       refreshing: true
     };
+    console.log(this.state.clubId);
     YellowBox.ignoreWarnings(['Setting a timer']);
     console.ignoredYellowBox = [
       'Setting a timer'
@@ -72,11 +70,6 @@ export default class ClubDescrScreen extends React.Component {
   }
   onRefresh() {
     this.setState({
-      // clubName,
-      // day,
-      // roomNumber,
-      // shortDescr,
-      // when,
       data: [],
       refreshing: true
     });
@@ -87,98 +80,37 @@ export default class ClubDescrScreen extends React.Component {
     let db = app.firestore();
     console.log("Pulling...");
     
-    let club = db.collection('clubs').doc('6cnht66zmzVnAZqK6NYj');
-
-    // let getName = club.get('clubName')
-    //   .then((snapshot) => {
-    //     var tempName = snapshot.val();
-    //     this.setState({
-    //       clubName: tempName,
-    //       refreshing: false
-    //     });
-    //     //could put test case in console.log here
-    //   })
-    //   .catch(err => {
-    //     console.log('Error getting document', err);
-    //   })
-    // let getDay = club.get('day')
-    //       .then((snapshot) => {
-    //     var tempDay = snapshot.val();
-    //     this.setState({
-    //       day: tempDay,
-    //       refreshing: false
-    //     });
-    //     //could put test case in console.log here
-    //   })
-    //   .catch(err => {
-    //     console.log('Error getting document', err);
-    //   })
-    // let getRoomNumber = club.get('roomNumber')
-    //       .then((snapshot) => {
-    //     var tempNum = snapshot.val();
-    //     this.setState({
-    //       roomNumber: tempNum,
-    //       refreshing: false
-    //     });
-    //     //could put test case in console.log here
-    //   })
-    //   .catch(err => {
-    //     console.log('Error getting document', err);
-    //   })
-    // let getDescr = club.get('shortDesc')
-    //       .then((snapshot) => {
-    //     var tempDescr = snapshot.val();
-    //     this.setState({
-    //       shortDescr: tempDescr,
-    //       refreshing: false
-    //     });
-    //     //could put test case in console.log here
-    //   })
-    //   .catch(err => {
-    //     console.log('Error getting document', err);
-    //   })
-    // let getWhen = club.get('when')
-    //       .then((snapshot) => {
-    //     var tempWhen = snapshot.val();
-    //     this.setState({
-    //       when: tempWhen,
-    //       refreshing: false
-    //     });
-    //     //could put test case in console.log here
-    //   })
-    //   .catch(err => {
-    //     console.log('Error getting document', err);
-    //   })
+    let club = db.collection('clubs').doc(this.state.clubId);
     let getData = club.get()
       .then(snapshot => {
         var tempData = snapshot.data();
         this.setState({
           data: tempData,
-          //data.clubName = clubName(firebase)
-          //data.day = day(firebase)... for roomNumber,shortDesc, and when
           refreshing: false
         });
         console.log(this.state.data);
+        console.log(this.state.data.shortDesc);
       })
       .catch(err => {
         console.log('Error getting document', err);
       })
   }
 
-//still need work on this
   render() {
     let descr;
     if(this.state.refreshing){
-      return( <View><Text style={styles.clubText}>Loading...</Text></View>);
+      return( 
+        <View><Text style={styles.clubText}>Loading...</Text></View>
+      );
     }
     else {
       return (
       <View>
-      <Text style ={styles.clubText}>{this.state.data.clubName.toString()}</Text>
-      <Text style ={styles.clubText}>{this.state.data.when.toString()}</Text>
-      <Text style ={styles.clubText}>{this.state.data.roomNumber.toString()}</Text>;
-      <Text style ={styles.clubText}>{this.state.data.day.toString()}</Text>;
-      <Text style ={styles.clubText}>{this.state.data.shortDesc.toString()}</Text>;
+        <Text style={styles.clubText}>{this.state.data.clubName}</Text>
+        <Text style={styles.clubText}>When: {this.state.data.when}</Text>
+        <Text style={styles.clubText}>In Room {this.state.data.roomNumber}</Text>
+        <Text style={styles.clubText}>On {this.state.data.day}</Text>
+        <Text style={styles.clubText}>{this.state.data.shortDesc}</Text>
       </View>
       )
     }

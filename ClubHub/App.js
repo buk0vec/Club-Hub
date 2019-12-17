@@ -18,8 +18,11 @@ import {
   createAppContainer
 } from 'react-navigation';
 import { 
-  createBottomTabNavigator 
+  createBottomTabNavigator,
 } from 'react-navigation-tabs';
+import { 
+  createStackNavigator,
+} from 'react-navigation-stack';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 
@@ -37,11 +40,14 @@ const styles = StyleSheet.create({
   }
 });
 
+const DetailsNavigator = createStackNavigator({
+	ClubDirectory: {screen: ClubDirectoryScreen, navigationOptions: {header: null}},
+    ClubDescrScreen: {screen: ClubDescrScreen},
+});
 
 const TabNavigator = createBottomTabNavigator({
   MyClubs: {screen: MyClubsScreen},
-  ClubDirectory: {screen: ClubDirectoryScreen},
-  ClubDescrScreen: {screen: ClubDescrScreen},
+  ClubDirectory: DetailsNavigator,
   Settings: {screen: SettingsScreen},
 });
 

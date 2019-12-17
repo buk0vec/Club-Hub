@@ -63,41 +63,8 @@ export default class ClubDirectoryScreen extends React.Component {
   componentDidMount() {
     this.onRefresh();
   }
-  /*
-  componentDidMount() {
-    this.setState({
-      clubs: [],
-      refreshing: true
-    });
-    if (!firebase.apps.length) {
-      let app = firebase.initializeApp(firebaseConfig);
-    }
-    let tempIds = [];
-    let app = firebase.app();
-    let db = app.firestore();
-    console.log("Pulling...");
-    
-    let clubsRef = db.collection('clubs');
-
-    let getNames = clubsRef.get()
-      .then(snapshot => {
-        snapshot.forEach(doc => {
-          this.setState({
-            clubs: [...this.state.clubs, {id: doc.id, name: doc.data().clubName}],
-          });
-        })
-        this.setState({
-          refreshing: false
-        });
-        console.log("Clubs set, ", this.state.clubs);
-      })
-      .catch(err => {
-        console.log('Error getting document', err);
-      });
-  }
-  */
   onClubPress(item){
-    Alert.alert('Club Pressed!', 'Club ID: ' + item.id)
+    this.props.navigation.navigate("ClubDescrScreen", {clubId: item.id});
   }
   Separator() {
     return <View style={styles.separator} />;
