@@ -50,13 +50,18 @@ export default class ClubDescrScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      // clubName,
+      // day,
+      // roomNumber,
+      // shortDescr,
+      // when,
+      data: [],
       refreshing: true
     };
     YellowBox.ignoreWarnings(['Setting a timer']);
     console.ignoredYellowBox = [
       'Setting a timer'
     ];
-    this.onClubPress = this.onClubPress.bind(this);
     this.onRefresh = this.onRefresh.bind(this);
   }
   componentDidMount() {
@@ -72,7 +77,7 @@ export default class ClubDescrScreen extends React.Component {
       // roomNumber,
       // shortDescr,
       // when,
-      data,
+      data: [],
       refreshing: true
     });
     if (!firebase.apps.length) {
@@ -82,62 +87,100 @@ export default class ClubDescrScreen extends React.Component {
     let db = app.firestore();
     console.log("Pulling...");
     
-    let club = db.doc('6cnht66zmzVnAZqK6NYj');
+    let club = db.collection('clubs').doc('6cnht66zmzVnAZqK6NYj');
 
     // let getName = club.get('clubName')
+    //   .then((snapshot) => {
+    //     var tempName = snapshot.val();
+    //     this.setState({
+    //       clubName: tempName,
+    //       refreshing: false
+    //     });
+    //     //could put test case in console.log here
+    //   })
+    //   .catch(err => {
+    //     console.log('Error getting document', err);
+    //   })
     // let getDay = club.get('day')
+    //       .then((snapshot) => {
+    //     var tempDay = snapshot.val();
+    //     this.setState({
+    //       day: tempDay,
+    //       refreshing: false
+    //     });
+    //     //could put test case in console.log here
+    //   })
+    //   .catch(err => {
+    //     console.log('Error getting document', err);
+    //   })
     // let getRoomNumber = club.get('roomNumber')
+    //       .then((snapshot) => {
+    //     var tempNum = snapshot.val();
+    //     this.setState({
+    //       roomNumber: tempNum,
+    //       refreshing: false
+    //     });
+    //     //could put test case in console.log here
+    //   })
+    //   .catch(err => {
+    //     console.log('Error getting document', err);
+    //   })
     // let getDescr = club.get('shortDesc')
+    //       .then((snapshot) => {
+    //     var tempDescr = snapshot.val();
+    //     this.setState({
+    //       shortDescr: tempDescr,
+    //       refreshing: false
+    //     });
+    //     //could put test case in console.log here
+    //   })
+    //   .catch(err => {
+    //     console.log('Error getting document', err);
+    //   })
     // let getWhen = club.get('when')
+    //       .then((snapshot) => {
+    //     var tempWhen = snapshot.val();
+    //     this.setState({
+    //       when: tempWhen,
+    //       refreshing: false
+    //     });
+    //     //could put test case in console.log here
+    //   })
+    //   .catch(err => {
+    //     console.log('Error getting document', err);
+    //   })
     let getData = club.get()
-      .then(function(snapshot)
+      .then(snapshot => {
+        var tempData = snapshot.data();
         this.setState({
-          data = snapshot.val();
+          data: tempData,
           //data.clubName = clubName(firebase)
-          //data.day = day(firebas)...
+          //data.day = day(firebase)... for roomNumber,shortDesc, and when
           refreshing: false
         });
-        //could put test case in console.log here
+        console.log(this.state.data);
       })
       .catch(err => {
         console.log('Error getting document', err);
-      }
+      })
   }
 
 //still need work on this
   render() {
     let descr;
     if(this.state.refreshing){
-      descr = <Text style={styles.clubText}>Loading...</Text>;
+      return( <View><Text style={styles.clubText}>Loading...</Text></View>);
     }
     else {
-      ClubList = <FlatList 
-          data={this.state.clubs} 
-          renderItem={({item}) => (
-            <View>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => this.onClubPress(item)}
-            >
-              <Text style={styles.clubText}>{item.name}</Text>
-            </TouchableOpacity>
-            {this.Separator()}
-            </View>
-          )}
-          refreshControl={
-            <RefreshControl 
-              refreshing={this.state.refreshing}
-              onRefresh={() => this.onRefresh()}
-              />
-          } 
-        />;
-    }
-    return (
+      return (
       <View>
-        <Text style={styles.mainText}>Club Directory</Text>
-        {this.Separator()}
-        {ClubList}
+      <Text style ={styles.clubText}>{this.state.data.clubName.toString()}</Text>
+      <Text style ={styles.clubText}>{this.state.data.when.toString()}</Text>
+      <Text style ={styles.clubText}>{this.state.data.roomNumber.toString()}</Text>;
+      <Text style ={styles.clubText}>{this.state.data.day.toString()}</Text>;
+      <Text style ={styles.clubText}>{this.state.data.shortDesc.toString()}</Text>;
       </View>
-    );
+      )
+    }
   }
 }

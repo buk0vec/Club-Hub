@@ -25,6 +25,7 @@ import 'firebase/firestore';
 
 import MyClubsScreen from './screens/MyClubsScreen';
 import ClubDirectoryScreen from './screens/ClubDirectoryScreen';
+import ClubDescrScreen from './screens/ClubDescrScreen';
 import SettingsScreen from './screens/SettingsScreen';
 
 
@@ -40,6 +41,7 @@ const styles = StyleSheet.create({
 const TabNavigator = createBottomTabNavigator({
   MyClubs: {screen: MyClubsScreen},
   ClubDirectory: {screen: ClubDirectoryScreen},
+  ClubDescrScreen: {screen: ClubDescrScreen},
   Settings: {screen: SettingsScreen},
 });
 
