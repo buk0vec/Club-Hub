@@ -41,6 +41,15 @@ const TabNavigator = createBottomTabNavigator({
   MyClubs: {screen: MyClubsScreen},
   ClubDirectory: {screen: ClubDirectoryScreen},
   Settings: {screen: SettingsScreen},
+},{
+	tabBarOptions:{
+    //inactiveTintColor: '#8800FF';
+		activeTintColor:'#F0F0F0',
+		activeBackgroundColor:'#8800FF',
+		labelStyle: {
+			fontSize: 20,
+		}
+	}
 });
 
 export default createAppContainer(TabNavigator);
