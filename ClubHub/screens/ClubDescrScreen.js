@@ -1,3 +1,7 @@
+/*
+  ClubDescrScreen.js
+  Displays the details of clubs by pulling them from FireStore
+*/
 import React from 'react';
 import {
 	Text,
@@ -16,6 +20,7 @@ import {
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 
+//StyleSheet for components
 const styles = StyleSheet.create({
   mainText: {
     fontSize: 50,
@@ -35,6 +40,7 @@ const styles = StyleSheet.create({
   },  
 });
 
+//Config for accessing Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyCImYVjbM-_ftS_Cx9agtbhHnEpam0IjrE",
   authDomain: "clubhub2020.firebaseapp.com",
@@ -49,6 +55,7 @@ const firebaseConfig = {
 export default class ClubDescrScreen extends React.Component {
   constructor(props) {
     super(props);
+    //Set default state and props, take clubId from the navigation properties
     const {navigation} = this.props;
     this.state = {
       clubId: navigation.getParam('clubId'),
@@ -62,27 +69,33 @@ export default class ClubDescrScreen extends React.Component {
     ];
     this.onRefresh = this.onRefresh.bind(this);
   }
+  //After init, pull the data
   componentDidMount() {
     this.onRefresh();
   }
+  //Separator component, just for styling
   Separator() {
     return <View style={styles.separator} />;
   }
   onRefresh() {
+    //Set default state and refreshing state
     this.setState({
       data: [],
       refreshing: true
     });
+    //If app doesn't already exist, create app
     if (!firebase.apps.length) {
       let app = firebase.initializeApp(firebaseConfig); //connecting firebase to app
     }
+    //Connecting to firestore...
     let app = firebase.app();
     let db = app.firestore();
     console.log("Pulling...");
-    
+    //Access doc that was passed by Directory
     let club = db.collection('clubs').doc(this.state.clubId);
     let getData = club.get()
       .then(snapshot => {
+        //Get data and assign to state
         var tempData = snapshot.data();
         this.setState({
           data: tempData,
@@ -98,6 +111,7 @@ export default class ClubDescrScreen extends React.Component {
 
   render() {
     let descr;
+    //If refreshing, display loading text. Else, display data
     if(this.state.refreshing){
       return( 
         <View><Text style={styles.clubText}>Loading...</Text></View>
