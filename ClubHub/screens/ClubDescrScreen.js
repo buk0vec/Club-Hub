@@ -1,3 +1,7 @@
+/*
+  ClubDescrScreen.js
+  Displays the details of clubs by pulling them from FireStore
+*/
 import React from 'react';
 import {
 	Text,
@@ -16,6 +20,7 @@ import {
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 
+//StyleSheet for components
 const styles = StyleSheet.create({
   mainText: {
     fontSize: 50,
@@ -35,6 +40,7 @@ const styles = StyleSheet.create({
   },  
 });
 
+//Config for accessing Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyCImYVjbM-_ftS_Cx9agtbhHnEpam0IjrE",
   authDomain: "clubhub2020.firebaseapp.com",
@@ -46,92 +52,81 @@ const firebaseConfig = {
   measurementId: "G-T0G1E3NW8T"
 };
 
-export default class ClubDirectoryScreen extends React.Component {
+export default class ClubDescrScreen extends React.Component {
   constructor(props) {
     super(props);
+    //Set default state and props, take clubId from the navigation properties
+    const {navigation} = this.props;
     this.state = {
-      clubs: [],
+      clubId: navigation.getParam('clubId'),
+      data: [],
       refreshing: true
     };
+    console.log(this.state.clubId);
     YellowBox.ignoreWarnings(['Setting a timer']);
     console.ignoredYellowBox = [
       'Setting a timer'
     ];
-    this.onClubPress = this.onClubPress.bind(this);
     this.onRefresh = this.onRefresh.bind(this);
   }
+  //After init, pull the data
   componentDidMount() {
     this.onRefresh();
   }
-  onClubPress(item){
-    this.props.navigation.navigate("ClubDescrScreen", {clubId: item.id});
-  }
+  //Separator component, just for styling
   Separator() {
     return <View style={styles.separator} />;
   }
   onRefresh() {
+    //Set default state and refreshing state
     this.setState({
-      clubs: [],
+      data: [],
       refreshing: true
     });
+    //If app doesn't already exist, create app
     if (!firebase.apps.length) {
-      let app = firebase.initializeApp(firebaseConfig);
+      let app = firebase.initializeApp(firebaseConfig); //connecting firebase to app
     }
-    let tempClubs = [];
+    //Connecting to firestore...
     let app = firebase.app();
     let db = app.firestore();
     console.log("Pulling...");
-    
-    let clubsRef = db.collection('clubs');
-
-    let getNames = clubsRef.get()
+    //Access doc that was passed by Directory
+    let club = db.collection('clubs').doc(this.state.clubId);
+    let getData = club.get()
       .then(snapshot => {
-        snapshot.forEach(doc => {
-            tempClubs.push({id: doc.id, name: doc.data().clubName});
-        })
+        //Get data and assign to state
+        var tempData = snapshot.data();
         this.setState({
-          clubs: [...tempClubs],
+          data: tempData,
           refreshing: false
         });
-        console.log("Clubs set, ", this.state.clubs);
+        console.log(this.state.data);
+        console.log(this.state.data.shortDesc);
       })
       .catch(err => {
         console.log('Error getting document', err);
-      });
+      })
   }
+
   render() {
-    let ClubList;
+    let descr;
+    //If refreshing, display loading text. Else, display data
     if(this.state.refreshing){
-      ClubList = <Text style={styles.clubText}>Loading...</Text>;
+      return( 
+        <View><Text style={styles.clubText}>Loading...</Text></View>
+      );
     }
     else {
-      ClubList = <FlatList 
-          data={this.state.clubs} 
-          renderItem={({item}) => (
-            <View>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => this.onClubPress(item)}
-            >
-              <Text style={styles.clubText}>{item.name}</Text>
-            </TouchableOpacity>
-            {this.Separator()}
-            </View>
-          )}
-          refreshControl={
-            <RefreshControl 
-              refreshing={this.state.refreshing}
-              onRefresh={() => this.onRefresh()}
-            />
-          } 
-        />;
-    }
-    return (
+      return (
       <View>
-        <Text style={styles.mainText}>Club Directory</Text>
-        {this.Separator()}
-        {ClubList}
+        <Text style={styles.clubText}>{this.state.data.clubName}</Text>
+        <Text style={styles.clubText}>When: {this.state.data.when}</Text>
+        <Text style={styles.clubText}>In Room {this.state.data.roomNumber}</Text>
+        <Text style={styles.clubText}>On {this.state.data.day}</Text>
+        <Text style={styles.clubText}>{this.state.data.shortDesc}</Text>
       </View>
-    );
+      )
+    }
   }
 }
