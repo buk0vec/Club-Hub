@@ -19,6 +19,10 @@ import {
 
 import * as firebase from 'firebase';
 import 'firebase/firestore';
+import { compose } from 'redux'
+import { connect } from 'react-redux'
+import { firestoreConnect } from 'react-redux-firebase'
+import store from '../redux/store'
 
 //StyleSheet for components
 const styles = StyleSheet.create({
@@ -52,63 +56,29 @@ const firebaseConfig = {
   measurementId: "G-T0G1E3NW8T"
 };
 
-export default class ClubDescrScreen extends React.Component {
+class ClubDescrScreen extends React.Component {
   constructor(props) {
     super(props);
     //Set default state and props, take clubId from the navigation properties
-    const {navigation} = this.props;
+    //const {navigation} = this.props;
     this.state = {
-      clubId: navigation.getParam('clubId'),
       data: [],
-      refreshing: true
+      refreshing: false,
     };
     console.log(this.state.clubId);
     YellowBox.ignoreWarnings(['Setting a timer']);
     console.ignoredYellowBox = [
       'Setting a timer'
     ];
-    this.onRefresh = this.onRefresh.bind(this);
   }
   //After init, pull the data
   componentDidMount() {
-    this.onRefresh();
+    //this.onRefresh();
   }
   //Separator component, just for styling
   Separator() {
     return <View style={styles.separator} />;
   }
-  onRefresh() {
-    //Set default state and refreshing state
-    this.setState({
-      data: [],
-      refreshing: true
-    });
-    //If app doesn't already exist, create app
-    if (!firebase.apps.length) {
-      let app = firebase.initializeApp(firebaseConfig); //connecting firebase to app
-    }
-    //Connecting to firestore...
-    let app = firebase.app();
-    let db = app.firestore();
-    console.log("Pulling...");
-    //Access doc that was passed by Directory
-    let club = db.collection('clubs').doc(this.state.clubId);
-    let getData = club.get()
-      .then(snapshot => {
-        //Get data and assign to state
-        var tempData = snapshot.data();
-        this.setState({
-          data: tempData,
-          refreshing: false
-        });
-        console.log(this.state.data);
-        console.log(this.state.data.shortDesc);
-      })
-      .catch(err => {
-        console.log('Error getting document', err);
-      })
-  }
-
   render() {
     let descr;
     //If refreshing, display loading text. Else, display data
@@ -120,13 +90,22 @@ export default class ClubDescrScreen extends React.Component {
     else {
       return (
       <View>
-        <Text style={styles.clubText}>{this.state.data.clubName}</Text>
-        <Text style={styles.clubText}>When: {this.state.data.when}</Text>
-        <Text style={styles.clubText}>In Room {this.state.data.roomNumber}</Text>
-        <Text style={styles.clubText}>On {this.state.data.day}</Text>
-        <Text style={styles.clubText}>{this.state.data.shortDesc}</Text>
+        <Text style={styles.clubText}>{this.props.club.clubName}</Text>
+        <Text style={styles.clubText}>When: {this.props.club.when}</Text>
+        <Text style={styles.clubText}>In Room {this.props.club.roomNumber}</Text>
+        <Text style={styles.clubText}>On {this.props.club.day}</Text>
+        <Text style={styles.clubText}>{this.props.club.shortDesc}</Text>
       </View>
       )
     }
   }
 }
+
+export default compose(
+ firestoreConnect((props) => [
+   { collection: 'clubs'} // or `todos/${props.todoId}`
+ ]),
+ connect(({ firestore: { data } }, props) => ({
+   club: data.clubs && data.clubs[store.getState().clubs.descrId],
+ }))
+)(ClubDescrScreen)

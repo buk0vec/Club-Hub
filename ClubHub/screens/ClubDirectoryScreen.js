@@ -15,6 +15,11 @@ import {
 
 import * as firebase from 'firebase';
 import 'firebase/firestore';
+import { compose } from 'redux'
+import { connect } from 'react-redux'
+import { firestoreConnect } from 'react-redux-firebase'
+import { setDescrId } from '../redux/actions'
+import store from '../redux/store'
 
 const styles = StyleSheet.create({
   mainText: {
@@ -46,59 +51,30 @@ const firebaseConfig = {
   measurementId: "G-T0G1E3NW8T"
 };
 
-export default class ClubDirectoryScreen extends React.Component {
+class ClubDirectoryScreen extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
       clubs: [],
-      refreshing: true
+      refreshing: false
     };
     YellowBox.ignoreWarnings(['Setting a timer']);
     console.ignoredYellowBox = [
       'Setting a timer'
     ];
     this.onClubPress = this.onClubPress.bind(this);
-    this.onRefresh = this.onRefresh.bind(this);
-  }
-  componentDidMount() {
-    this.onRefresh();
   }
   onClubPress(item){
-    this.props.navigation.navigate("ClubDescrScreen", {clubId: item.id});
+    console.log("Running setDescrId");
+    this.props.setDescrId(item.id);
+    console.log("Did it work?");
+    this.props.navigation.navigate("ClubDescrScreen");
   }
   Separator() {
     return <View style={styles.separator} />;
   }
-  onRefresh() {
-    this.setState({
-      clubs: [],
-      refreshing: true
-    });
-    if (!firebase.apps.length) {
-      let app = firebase.initializeApp(firebaseConfig);
-    }
-    let tempClubs = [];
-    let app = firebase.app();
-    let db = app.firestore();
-    console.log("Pulling...");
-    
-    let clubsRef = db.collection('clubs');
 
-    let getNames = clubsRef.get()
-      .then(snapshot => {
-        snapshot.forEach(doc => {
-            tempClubs.push({id: doc.id, name: doc.data().clubName});
-        })
-        this.setState({
-          clubs: [...tempClubs],
-          refreshing: false
-        });
-        console.log("Clubs set, ", this.state.clubs);
-      })
-      .catch(err => {
-        console.log('Error getting document', err);
-      });
-  }
   render() {
     let ClubList;
     if(this.state.refreshing){
@@ -106,25 +82,19 @@ export default class ClubDirectoryScreen extends React.Component {
     }
     else {
       ClubList = <FlatList 
-          data={this.state.clubs} 
+          data={this.props.clubs} 
           renderItem={({item}) => (
             <View>
             <TouchableOpacity
               style={styles.button}
               onPress={() => this.onClubPress(item)}
             >
-              <Text style={styles.clubText}>{item.name}</Text>
+              <Text style={styles.clubText}>{item.clubName}</Text>
             </TouchableOpacity>
             {this.Separator()}
             </View>
           )}
-          refreshControl={
-            <RefreshControl 
-              refreshing={this.state.refreshing}
-              onRefresh={() => this.onRefresh()}
-            />
-          } 
-        />;
+          />;
     }
     return (
       <View>
@@ -135,3 +105,23 @@ export default class ClubDirectoryScreen extends React.Component {
     );
   }
 }
+
+function mapStateToProps(state){
+  return {
+    clubs: state.firestore.ordered.clubs,
+    descrId: state.descrId
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    
+    setDescrId: id => {
+      dispatch(setDescrId(id))
+    }
+    
+  }
+}
+export default compose(
+  firestoreConnect(() => ['clubs']), // or { collection: 'todos' }
+  connect(mapStateToProps, mapDispatchToProps))(ClubDirectoryScreen);
