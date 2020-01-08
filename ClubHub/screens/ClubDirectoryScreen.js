@@ -1,3 +1,8 @@
+/*
+  ClubDirectoryScreen.js
+  The screen that displays the club directory
+*/
+
 import React from 'react';
 import {
 	Text,
@@ -15,6 +20,11 @@ import {
 
 import * as firebase from 'firebase';
 import 'firebase/firestore';
+import { compose } from 'redux'
+import { connect } from 'react-redux'
+import { firestoreConnect } from 'react-redux-firebase'
+import { setDescrId } from '../redux/actions' //Sets the description ID for ClubDescrScreen
+import store from '../redux/store' //Store import for debug
 
 const styles = StyleSheet.create({
   mainText: {
@@ -35,96 +45,49 @@ const styles = StyleSheet.create({
   },  
 });
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCImYVjbM-_ftS_Cx9agtbhHnEpam0IjrE",
-  authDomain: "clubhub2020.firebaseapp.com",
-  databaseURL: "https://clubhub2020.firebaseio.com",
-  projectId: "clubhub2020",
-  storageBucket: "clubhub2020.appspot.com",
-  messagingSenderId: "777356333375",
-  appId: "1:777356333375:web:90b139608be0db3e94038a",
-  measurementId: "G-T0G1E3NW8T"
-};
-
-export default class ClubDirectoryScreen extends React.Component {
+class ClubDirectoryScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      clubs: [],
-      refreshing: true
-    };
     YellowBox.ignoreWarnings(['Setting a timer']);
     console.ignoredYellowBox = [
       'Setting a timer'
     ];
     this.onClubPress = this.onClubPress.bind(this);
-    this.onRefresh = this.onRefresh.bind(this);
   }
-  componentDidMount() {
-    this.onRefresh();
-  }
+  //Runs when one of the clubs is pressed, sets descrId in the store to the ID
+  //of the pressed club so ClubDescrId can take it in
   onClubPress(item){
-    this.props.navigation.navigate("ClubDescrScreen", {clubId: item.id});
+    console.log("Running setDescrId");
+    this.props.setDescrId(item.id);
+    this.props.navigation.navigate("ClubDescrScreen"); //Get further!
   }
+  //Style class
   Separator() {
     return <View style={styles.separator} />;
   }
-  onRefresh() {
-    this.setState({
-      clubs: [],
-      refreshing: true
-    });
-    if (!firebase.apps.length) {
-      let app = firebase.initializeApp(firebaseConfig);
-    }
-    let tempClubs = [];
-    let app = firebase.app();
-    let db = app.firestore();
-    console.log("Pulling...");
-    
-    let clubsRef = db.collection('clubs');
-
-    let getNames = clubsRef.get()
-      .then(snapshot => {
-        snapshot.forEach(doc => {
-            tempClubs.push({id: doc.id, name: doc.data().clubName});
-        })
-        this.setState({
-          clubs: [...tempClubs],
-          refreshing: false
-        });
-        console.log("Clubs set, ", this.state.clubs);
-      })
-      .catch(err => {
-        console.log('Error getting document', err);
-      });
-  }
+  //The render function
   render() {
     let ClubList;
-    if(this.state.refreshing){
+    //If the clubs haven't been grabbed yet, display loading text
+    if(!this.props.clubs){
       ClubList = <Text style={styles.clubText}>Loading...</Text>;
     }
+    //For each item in this.props.clubs, create a button with the club name. When it's pressed, pass the club into onClubPress()
     else {
       ClubList = <FlatList 
-          data={this.state.clubs} 
+          data={this.props.clubs} 
           renderItem={({item}) => (
             <View>
             <TouchableOpacity
               style={styles.button}
               onPress={() => this.onClubPress(item)}
             >
-              <Text style={styles.clubText}>{item.name}</Text>
+              <Text style={styles.clubText}>{item.clubName}</Text>
             </TouchableOpacity>
             {this.Separator()}
             </View>
           )}
-          refreshControl={
-            <RefreshControl 
-              refreshing={this.state.refreshing}
-              onRefresh={() => this.onRefresh()}
-            />
-          } 
-        />;
+          />;
     }
     return (
       <View>
@@ -135,3 +98,24 @@ export default class ClubDirectoryScreen extends React.Component {
     );
   }
 }
+
+//Makes it so the clubs collection is sent to this.props.clubs
+function mapStateToProps(state){
+  return {
+    clubs: state.firestore.ordered.clubs,
+  }
+}
+//Makes it so you can use setDescrId(id) by calling this.props.setDescrId(id)
+function mapDispatchToProps(dispatch) {
+  return {
+    
+    setDescrId: id => {
+      dispatch(setDescrId(id))
+    }
+    
+  }
+}
+//Connects the firestore to the clubs collection and registers the two map functions to the store
+export default compose(
+  firestoreConnect(() => ['clubs']), 
+  connect(mapStateToProps, mapDispatchToProps))(ClubDirectoryScreen);
