@@ -1,3 +1,8 @@
+/*
+	fb.js
+	Exports firebase configurations
+	This is pretty self explanatory
+*/
 import firebase from 'firebase'
 import 'firebase/firestore'
 

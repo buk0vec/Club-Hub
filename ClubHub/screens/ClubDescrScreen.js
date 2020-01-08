@@ -59,30 +59,19 @@ const firebaseConfig = {
 class ClubDescrScreen extends React.Component {
   constructor(props) {
     super(props);
-    //Set default state and props, take clubId from the navigation properties
-    //const {navigation} = this.props;
-    this.state = {
-      data: [],
-      refreshing: false,
-    };
-    console.log(this.state.clubId);
     YellowBox.ignoreWarnings(['Setting a timer']);
     console.ignoredYellowBox = [
       'Setting a timer'
     ];
   }
-  //After init, pull the data
-  componentDidMount() {
-    //this.onRefresh();
-  }
   //Separator component, just for styling
   Separator() {
     return <View style={styles.separator} />;
   }
+  //Render the bitty
   render() {
-    let descr;
-    //If refreshing, display loading text. Else, display data
-    if(this.state.refreshing){
+    //If the club info is loading, display loading text. Else, display data
+    if(!this.props.club){
       return( 
         <View><Text style={styles.clubText}>Loading...</Text></View>
       );
@@ -101,11 +90,12 @@ class ClubDescrScreen extends React.Component {
   }
 }
 
+//Shorthand I copied from the tutorial, basically puts the club data into this.props.clubs
 export default compose(
  firestoreConnect((props) => [
    { collection: 'clubs'} // or `todos/${props.todoId}`
  ]),
  connect(({ firestore: { data } }, props) => ({
-   club: data.clubs && data.clubs[store.getState().clubs.descrId],
+   club: data.clubs[store.getState().clubs.descrId], //store.getState().clubs.descrId gets the descrId from the store
  }))
 )(ClubDescrScreen)

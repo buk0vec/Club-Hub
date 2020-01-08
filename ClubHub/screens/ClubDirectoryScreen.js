@@ -1,3 +1,8 @@
+/*
+  ClubDirectoryScreen.js
+  The screen that displays the club directory
+*/
+
 import React from 'react';
 import {
 	Text,
@@ -18,8 +23,8 @@ import 'firebase/firestore';
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { firestoreConnect } from 'react-redux-firebase'
-import { setDescrId } from '../redux/actions'
-import store from '../redux/store'
+import { setDescrId } from '../redux/actions' //Sets the description ID for ClubDescrScreen
+import store from '../redux/store' //Store import for debug
 
 const styles = StyleSheet.create({
   mainText: {
@@ -40,46 +45,34 @@ const styles = StyleSheet.create({
   },  
 });
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCImYVjbM-_ftS_Cx9agtbhHnEpam0IjrE",
-  authDomain: "clubhub2020.firebaseapp.com",
-  databaseURL: "https://clubhub2020.firebaseio.com",
-  projectId: "clubhub2020",
-  storageBucket: "clubhub2020.appspot.com",
-  messagingSenderId: "777356333375",
-  appId: "1:777356333375:web:90b139608be0db3e94038a",
-  measurementId: "G-T0G1E3NW8T"
-};
-
 class ClubDirectoryScreen extends React.Component {
-
   constructor(props) {
     super(props);
-    this.state = {
-      clubs: [],
-      refreshing: false
-    };
     YellowBox.ignoreWarnings(['Setting a timer']);
     console.ignoredYellowBox = [
       'Setting a timer'
     ];
     this.onClubPress = this.onClubPress.bind(this);
   }
+  //Runs when one of the clubs is pressed, sets descrId in the store to the ID
+  //of the pressed club so ClubDescrId can take it in
   onClubPress(item){
     console.log("Running setDescrId");
     this.props.setDescrId(item.id);
-    console.log("Did it work?");
-    this.props.navigation.navigate("ClubDescrScreen");
+    this.props.navigation.navigate("ClubDescrScreen"); //Get further!
   }
+  //Style class
   Separator() {
     return <View style={styles.separator} />;
   }
-
+  //The render function
   render() {
     let ClubList;
-    if(this.state.refreshing){
+    //If the clubs haven't been grabbed yet, display loading text
+    if(!this.props.clubs){
       ClubList = <Text style={styles.clubText}>Loading...</Text>;
     }
+    //For each item in this.props.clubs, create a button with the club name. When it's pressed, pass the club into onClubPress()
     else {
       ClubList = <FlatList 
           data={this.props.clubs} 
@@ -106,13 +99,13 @@ class ClubDirectoryScreen extends React.Component {
   }
 }
 
+//Makes it so the clubs collection is sent to this.props.clubs
 function mapStateToProps(state){
   return {
     clubs: state.firestore.ordered.clubs,
-    descrId: state.descrId
   }
 }
-
+//Makes it so you can use setDescrId(id) by calling this.props.setDescrId(id)
 function mapDispatchToProps(dispatch) {
   return {
     
@@ -122,6 +115,7 @@ function mapDispatchToProps(dispatch) {
     
   }
 }
+//Connects the firestore to the clubs collection and registers the two map functions to the store
 export default compose(
-  firestoreConnect(() => ['clubs']), // or { collection: 'todos' }
+  firestoreConnect(() => ['clubs']), 
   connect(mapStateToProps, mapDispatchToProps))(ClubDirectoryScreen);

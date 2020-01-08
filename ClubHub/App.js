@@ -1,9 +1,7 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
+App.js
+./screens: contains all the screens
+./redux: contains all the redux stuff
  */
 
 import React from 'react';
@@ -67,12 +65,13 @@ const TabNavigator = createBottomTabNavigator({
 
 let Navigation = createAppContainer(TabNavigator);
 
+//For react-redux-firebase
 const rrfConfig = {
   userProfile: 'users',
   useFirestoreForProfile: true // Firestore for Profile instead of Realtime DB
 }
 
-
+//For react-redux-firebase
 const rrfProps = {
   firebase,
   config: rrfConfig,
@@ -80,6 +79,8 @@ const rrfProps = {
   createFirestoreInstance // <- needed if using firestore
 }
 
+
+//This in theory shouldn't change, <Provider> allows access to store and <ReactReduxFirebaseProvider> allows fb access
 export default class App extends React.Component {
 	render() {
 		return (
