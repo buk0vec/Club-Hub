@@ -10,6 +10,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "adb": "^0.2.0",
     "firebase": "^7.5.0",
     "firebase-admin": "^8.8.0",
     "react": "16.9.0",
