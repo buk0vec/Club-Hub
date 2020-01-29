@@ -24,7 +24,7 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { firestoreConnect } from 'react-redux-firebase'
 import { setDescrId } from '../redux/actions' //Sets the description ID for ClubDescrScreen
-import store from '../redux/store' //Store import for debug
+import { store } from '../redux/store' //Store import for debug
 
 const styles = StyleSheet.create({
   mainText: {
@@ -59,6 +59,7 @@ class ClubDirectoryScreen extends React.Component {
   onClubPress(item){
     console.log("Running setDescrId");
     this.props.setDescrId(item.id);
+    console.log('Store ID state!', store.getState().clubs.descrId);
     this.props.navigation.navigate("ClubDescrScreen"); //Get further!
   }
   //Style class
@@ -103,12 +104,12 @@ class ClubDirectoryScreen extends React.Component {
 function mapStateToProps(state){
   return {
     clubs: state.firestore.ordered.clubs,
+    auth: state.firebase.auth
   }
 }
 //Makes it so you can use setDescrId(id) by calling this.props.setDescrId(id)
 function mapDispatchToProps(dispatch) {
   return {
-    
     setDescrId: id => {
       dispatch(setDescrId(id))
     }
