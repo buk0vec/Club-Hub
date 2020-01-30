@@ -3,8 +3,11 @@ import {
 	Text,
 	View,
 	Button,
-	StyleSheet
+	StyleSheet,
+  YellowBox
 } from 'react-native';
+
+import { connect } from 'react-redux'
 
 const styles = StyleSheet.create({
   mainText: {
@@ -15,6 +18,11 @@ const styles = StyleSheet.create({
 });
 
 export default class MyClubsScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    YellowBox.ignoreWarnings(['Setting a timer']);
+    console.ignoredYellowBox = ['Setting a timer'];
+  }
   render() {
     return (
       <View>

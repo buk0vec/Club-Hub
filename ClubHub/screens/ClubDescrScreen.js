@@ -22,7 +22,7 @@ import 'firebase/firestore';
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { firestoreConnect } from 'react-redux-firebase'
-import store from '../redux/store'
+import { store } from '../redux/store'
 
 //StyleSheet for components
 const styles = StyleSheet.create({
@@ -43,18 +43,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5'
   },  
 });
-
-//Config for accessing Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyCImYVjbM-_ftS_Cx9agtbhHnEpam0IjrE",
-  authDomain: "clubhub2020.firebaseapp.com",
-  databaseURL: "https://clubhub2020.firebaseio.com",
-  projectId: "clubhub2020",
-  storageBucket: "clubhub2020.appspot.com",
-  messagingSenderId: "777356333375",
-  appId: "1:777356333375:web:90b139608be0db3e94038a",
-  measurementId: "G-T0G1E3NW8T"
-};
 
 class ClubDescrScreen extends React.Component {
   constructor(props) {
@@ -78,7 +66,7 @@ class ClubDescrScreen extends React.Component {
     }
     else {
       return (
-      <View>
+       <View>
         <Text style={styles.clubText}>{this.props.club.clubName}</Text>
         <Text style={styles.clubText}>When: {this.props.club.when}</Text>
         <Text style={styles.clubText}>In Room {this.props.club.roomNumber}</Text>
@@ -90,6 +78,9 @@ class ClubDescrScreen extends React.Component {
   }
 }
 
+/*
+
+*/
 //Shorthand I copied from the tutorial, basically puts the club data into this.props.clubs
 export default compose(
  firestoreConnect((props) => [
