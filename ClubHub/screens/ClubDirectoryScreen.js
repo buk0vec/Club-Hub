@@ -29,10 +29,11 @@ import { store } from '../redux/store' //Store import for debug
 const styles = StyleSheet.create({
   mainText: {
     fontSize: 50,
-    backgroundColor: '#78acff'
+    backgroundColor: '#8800ff',
+    color: "#f5f5f5"
   },
   clubText: {
-    fontSize: 30
+    fontSize: 30,
   },
   button: {
     padding: 10,

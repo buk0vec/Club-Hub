@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
   mainText: {
     fontSize: 40,
     fontSize: 35,
-    color: 'hotpink',
+    color: '#000000',
   }
 });
 
@@ -27,7 +27,7 @@ export default class MyClubsScreen extends React.Component {
     return (
       <View>
         <Text style={styles.mainText}>This is the My Clubs Screen!</Text>
-        <Button title='Add Clubs (goes to Club Directory)'
+        <Button color="#7700ee" title='Add Clubs (goes to Club Directory)'
         onPress={() => this.props.navigation.navigate('ClubDirectory')}/>
       </View>
     );

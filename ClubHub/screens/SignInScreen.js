@@ -21,7 +21,8 @@ import { connect } from 'react-redux'
 const styles = StyleSheet.create({
   mainText: {
     fontSize: 50,
-    backgroundColor: '#78acff'
+    backgroundColor: '#9900ff',
+    color: "#ededed"
   },
   loginText: {
     fontSize: 30
@@ -31,10 +32,10 @@ const styles = StyleSheet.create({
 	color: 'red',
 	textAlign: 'center'
   },
-  button: {
+  /*button: {
     padding: 10,
-    backgroundColor: '#f5f5f5'
-  },
+   	color: '#7700ee'
+  },*/
   separator: {
     borderBottomColor: '#737373',
     borderBottomWidth: StyleSheet.hairlineWidth * 2,
@@ -83,9 +84,9 @@ class SignInScreen extends React.Component {
 				<Text style={styles.loginText}>Password</Text>
 				<TextInput placeholder='Password...' textContentType='password' secureTextEntry={true} autoFocus={false} 
 					onChangeText={text => this.onPasswordChange(text)}/>
-				<Button title='Sign in' onPress={() => this.onLoginPress()}/>
+				<Button color="#7700ee" title='Sign in' onPress={() => this.onLoginPress()}/>
 				<Text style={styles.mainText}>Or</Text>
-				<Button title='Create a new account' onPress={() => this.props.navigation.navigate("SignUp", {
+				<Button color="#7700ee" title='Create a new account' onPress={() => this.props.navigation.navigate("SignUp", {
 					inputEmail: this.state.email,
 					inputPassword: this.state.password
 				})}/>
