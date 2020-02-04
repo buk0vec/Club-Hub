@@ -9,7 +9,6 @@ import {
 	View,
 	Button,
 	StyleSheet,
-  FlatList,
   YellowBox,
   TouchableOpacity,
   Alert,
@@ -17,6 +16,7 @@ import {
   ScrollView
 } from 'react-native';
 
+import { FlatList } from 'react-navigation'; //Allows you to press tab bar to scroll back up
 
 import * as firebase from 'firebase';
 import 'firebase/firestore';
