@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   mainText: {
     fontSize: 40,
     fontSize: 35,
-    color: 'hotpink',
+    color: '#000000',
   }
 });
 
@@ -41,7 +41,7 @@ class SettingsScreen extends React.Component {
       <View>
         <Text style={styles.mainText}>This is the Settings Screen!</Text>
         <Text style={styles.mainText}>{this.props.user.firstName + ' ' + this.props.user.lastName}</Text>
-        <Button title="Sign Out!" onPress={() => this.onSignOutPress()} />
+        <Button color="#6600bb" title="Sign Out!" onPress={() => this.onSignOutPress()} />
       </View>
     );
   }

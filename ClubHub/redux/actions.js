@@ -5,7 +5,7 @@
 
 import firebase from 'firebase';
 import 'firebase/firestore';
-import { NavigationService } from '../screens/NavigationService'
+import NavigationService from '../screens/NavigationService'
 
 //Constants for payload types
 export const SET_DESCR_ID = 'SET_DESCR_ID';
@@ -31,6 +31,7 @@ export function signIn(credentials) {
 			credentials.email,
 			credentials.password
 		).then(() => {
+			NavigationService.navigate('MyClubs'); //Needed to auto navigate to clubs page
 			dispatch({type: LOGIN_SUCCESS})
 		}).catch((err) => {
 			dispatch({type: LOGIN_ERROR, err})
@@ -58,6 +59,7 @@ export function signUp(newUser) {
 			})
 		})
 		.then(() => {
+			NavigationService.navigate('MyClubs');
 			dispatch({ type: SIGNUP_SUCCESS})
 		}).catch((err) => {
 			dispatch( { type: SIGNUP_ERROR, err })

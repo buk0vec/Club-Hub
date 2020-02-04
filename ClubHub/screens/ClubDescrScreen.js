@@ -13,9 +13,9 @@ import {
   TouchableOpacity,
   Alert,
   RefreshControl,
-  ScrollView
 } from 'react-native';
 
+import { ScrollView } from 'react-navigation';
 
 import * as firebase from 'firebase';
 import 'firebase/firestore';
@@ -66,27 +66,26 @@ class ClubDescrScreen extends React.Component {
     }
     else {
       return (
-       <View>
+       <ScrollView>
         <Text style={styles.clubText}>{this.props.club.clubName}</Text>
         <Text style={styles.clubText}>When: {this.props.club.when}</Text>
-        <Text style={styles.clubText}>In Room {this.props.club.roomNumber}</Text>
-        <Text style={styles.clubText}>On {this.props.club.day}</Text>
-        <Text style={styles.clubText}>{this.props.club.shortDesc}</Text>
-      </View>
+        <Text style={styles.clubText}>In Room: {this.props.club.roomNumber}</Text>
+        <Text style={styles.clubText}>On: {this.props.club.day}</Text>
+        <Text style={styles.clubText}>Description: {this.props.club.shortDesc}</Text>
+      </ScrollView>
       )
     }
   }
 }
 
-/*
+function mapStateToProps(state) {
+  return {
+    club: state.firestore.data.clubs[store.getState().clubs.descrId],
+  }
+}
 
-*/
-//Shorthand I copied from the tutorial, basically puts the club data into this.props.clubs
 export default compose(
- firestoreConnect((props) => [
-   { collection: 'clubs'} // or `todos/${props.todoId}`
- ]),
- connect(({ firestore: { data } }, props) => ({
-   club: data.clubs[store.getState().clubs.descrId], //store.getState().clubs.descrId gets the descrId from the store
- }))
-)(ClubDescrScreen)
+  firestoreConnect(() => ['clubs']),
+  connect(mapStateToProps)
+)(ClubDescrScreen);
+

@@ -12,12 +12,11 @@ const styles = StyleSheet.create({
     fontSize: 50,
 	color: 'white'
   },
-
 container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'purple'
+    backgroundColor: '#8800ff'
   },
 });
 

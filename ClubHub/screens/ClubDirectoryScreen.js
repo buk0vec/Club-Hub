@@ -9,7 +9,6 @@ import {
 	View,
 	Button,
 	StyleSheet,
-  FlatList,
   YellowBox,
   TouchableOpacity,
   Alert,
@@ -17,6 +16,7 @@ import {
   ScrollView
 } from 'react-native';
 
+import { FlatList } from 'react-navigation'; //Allows you to press tab bar to scroll back up
 
 import * as firebase from 'firebase';
 import 'firebase/firestore';
@@ -29,10 +29,11 @@ import { store } from '../redux/store' //Store import for debug
 const styles = StyleSheet.create({
   mainText: {
     fontSize: 50,
-    backgroundColor: '#78acff'
+    backgroundColor: '#8800ff',
+    color: "#f5f5f5"
   },
   clubText: {
-    fontSize: 30
+    fontSize: 30,
   },
   button: {
     padding: 10,

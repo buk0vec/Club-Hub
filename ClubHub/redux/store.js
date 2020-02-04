@@ -51,7 +51,7 @@ function authReducer(state = initialState, payload) {
 	switch(payload.type){
 		case LOGIN_SUCCESS:
 			console.log("Dubs");
-			NavigationService.navigate('MyClubs'); //Needed to auto navigate to clubs page
+			//NavigationService.navigate('MyClubs'); //Needed to auto navigate to clubs page
 			return {...state,
 				authError: null
 			}
@@ -68,7 +68,7 @@ function authReducer(state = initialState, payload) {
 			}
 		case SIGNUP_SUCCESS:
 			console.log("Signed Up!");
-			NavigationService.navigate('MyClubs');
+			//NavigationService.navigate('MyClubs');
 			return {
 				...state,
 				signUpError: null
