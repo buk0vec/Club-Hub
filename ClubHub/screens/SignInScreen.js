@@ -84,9 +84,9 @@ class SignInScreen extends React.Component {
 				<Text style={styles.loginText}>Password</Text>
 				<TextInput placeholder='Password...' textContentType='password' secureTextEntry={true} autoFocus={false} 
 					onChangeText={text => this.onPasswordChange(text)}/>
-				<Button color="#7700ee" title='Sign in' onPress={() => this.onLoginPress()}/>
+				<Button color="#6600bb" title='Sign in' onPress={() => this.onLoginPress()}/>
 				<Text style={styles.mainText}>Or</Text>
-				<Button color="#7700ee" title='Create a new account' onPress={() => this.props.navigation.navigate("SignUp", {
+				<Button color="#6600bb" title='Create a new account' onPress={() => this.props.navigation.navigate("SignUp", {
 					inputEmail: this.state.email,
 					inputPassword: this.state.password
 				})}/>

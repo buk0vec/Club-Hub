@@ -41,7 +41,7 @@ class SettingsScreen extends React.Component {
       <View>
         <Text style={styles.mainText}>This is the Settings Screen!</Text>
         <Text style={styles.mainText}>{this.props.user.firstName + ' ' + this.props.user.lastName}</Text>
-        <Button color="#7700ee" title="Sign Out!" onPress={() => this.onSignOutPress()} />
+        <Button color="#6600bb" title="Sign Out!" onPress={() => this.onSignOutPress()} />
       </View>
     );
   }

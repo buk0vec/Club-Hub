@@ -22,7 +22,8 @@ import { connect } from 'react-redux'
 const styles = StyleSheet.create({
   mainText: {
     fontSize: 50,
-    backgroundColor: '#78acff'
+    backgroundColor: '#8800ff',
+    color: '#eeeeee'
   },
   loginText: {
     fontSize: 30
@@ -113,7 +114,7 @@ class SignUpScreen extends React.Component {
 				<Text style={styles.loginText}>Password</Text>
 				<TextInput placeholder='Password...' textContentType='password' value={this.state.password} secureTextEntry={true} autoFocus={false} 
 					onChangeText={text => this.onPasswordChange(text)}/>
-				<Button title='Sign up!' onPress={() => this.onLoginPress()}/>
+				<Button color = "#6600bb"title='Sign up!' onPress={() => this.onLoginPress()}/>
 				{this.props.signUpError ? <Text style={styles.errorText}>{this.props.signUpError}</Text> : null}
 			</ScrollView>
 		)
