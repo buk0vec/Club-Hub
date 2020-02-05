@@ -8,8 +8,8 @@ import fb from './fb';
 import thunk from 'redux-thunk';
 import { reduxFirestore, getFirestore, firestoreReducer } from 'redux-firestore'
 import { reactReduxFirebase, getFirebase, firebaseReducer } from 'react-redux-firebase'
-import { SET_DESCR_ID, LOGIN_SUCCESS, LOGIN_ERROR, LOGOUT_SUCCESS, SIGNUP_SUCCESS, SIGNUP_ERROR, setClubDescr, signIn, signOut, signUp,
-CHANGE_SIGNUP_ERROR, changeSignUpError } from './actions'
+import { SET_DESCR_ID, setClubDescr, /*LOGIN_SUCCESS, LOGIN_ERROR, LOGOUT_SUCCESS, SIGNUP_SUCCESS, SIGNUP_ERROR, , signIn, signOut, signUp,
+CHANGE_SIGNUP_ERROR, changeSignUpError */ } from './actions'
 import NavigationService from '../screens/NavigationService';
 
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
@@ -49,6 +49,10 @@ function clubReducer(state = initialState, payload) {
 //Auth reducer, covers signing in and out, and changes authError to the appropriate value depending on login status
 function authReducer(state = initialState, payload) {
 	switch(payload.type){
+		/*
+			DEPRECATED
+			Replaced by withFirebase auth
+
 		case LOGIN_SUCCESS:
 			console.log("Dubs");
 			//NavigationService.navigate('MyClubs'); //Needed to auto navigate to clubs page
@@ -85,6 +89,7 @@ function authReducer(state = initialState, payload) {
 				...state,
 				signUpError: payload.err
 			}
+		*/
 		default:
 			return state;
 

@@ -105,7 +105,6 @@ class ClubDirectoryScreen extends React.Component {
 function mapStateToProps(state){
   return {
     clubs: state.firestore.ordered.clubs,
-    auth: state.firebase.auth
   }
 }
 //Makes it so you can use setDescrId(id) by calling this.props.setDescrId(id)
