@@ -110,7 +110,6 @@ class SignInScreen extends React.Component {
 					inputEmail: this.state.email,
 					inputPassword: this.state.password
 				})}/>
-				<Button title="Google?" onPress={() => this.props.firebase.login({provider: 'google', type: 'redirect'})} />
 				{this.state.authError ? <Text style={styles.errorText}>{this.state.authError}</Text> : null}
 			</View>
 		)
