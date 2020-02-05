@@ -24,6 +24,11 @@ export function setDescrId(id) {
 	};
 }
 
+/*
+	Deprecated actions!
+	Replaced by using RRF's auth
+	Note that if needed, firebase normal auth can be found in props.firebase.auth()
+
 //signIn, takes in credentials and signs in with them
 export function signIn(credentials) {
 	return (dispatch, getState) => {
@@ -71,3 +76,4 @@ export function signUp(newUser) {
 export function changeSignUpError(err) {
 	return {type: CHANGE_SIGNUP_ERROR, err};
 }
+*/

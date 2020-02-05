@@ -15,7 +15,7 @@ import * as firebase from 'firebase';
 import 'firebase/firestore';
 import { signOut } from '../redux/actions'
 import { store } from '../redux/store'
-import { firestoreConnect } from 'react-redux-firebase'
+import { withFirebase } from 'react-redux-firebase'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 
@@ -33,7 +33,8 @@ class SettingsScreen extends React.Component {
     console.log("User data:", this.props.user)
   }
   onSignOutPress() {
-    this.props.signOut()
+  	//Use RRF's signout
+    this.props.firebase.logout();
     this.props.navigation.navigate("Auth");
   }
   render() {
@@ -58,9 +59,5 @@ function mapStateToProps(state, props) {
     user: state.firebase.profile
   }
 }
-function mapDispatchToProps(dispatch) {
-  return {
-    signOut: () => dispatch(signOut())
-  }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(SettingsScreen)
+
+export default compose(withFirebase, connect(mapStateToProps))(SettingsScreen)

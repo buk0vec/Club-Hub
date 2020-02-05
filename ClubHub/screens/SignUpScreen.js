@@ -18,7 +18,9 @@ import {
 } from 'react-native';
 
 import { signUp, changeSignUpError } from '../redux/actions'
+import { compose } from 'redux';
 import { connect } from 'react-redux'
+import { withFirebase } from 'react-redux-firebase'
 const styles = StyleSheet.create({
   mainText: {
     fontSize: 50,
@@ -55,7 +57,8 @@ class SignUpScreen extends React.Component {
 			password: inputPassword,
 			firstName: '',
 			lastName: '',
-			grade: ''
+			grade: '',
+			signUpError: null
 		}
 		YellowBox.ignoreWarnings(['Setting a timer']);
 		console.ignoredYellowBox = ['Setting a timer'];
@@ -90,12 +93,30 @@ class SignUpScreen extends React.Component {
 	onLoginPress(){
 		Keyboard.dismiss();
 		if(this.state.firstName == '' || this.state.lastName == '') {
-			this.props.changeSignUpError("You need to have a first and last name to sign up!")
+			this.setState(prevState => ({
+				...prevState,
+				signUpError: "You must input your name!"
+			}))
 			return;
 		}
-		console.log('Email =', this.state.email);
-		console.log('Password =', this.state.password);
-		this.props.signUp(this.state);
+		//Use RRF's firebase instance to create a user
+		this.props.firebase.createUser(
+			{email: this.state.email, password: this.state.password},
+			{firstName: this.state.firstName, lastName: this.state.lastName}
+		).then(() => {
+			//Success, navigate and remove error state
+			this.setState(prevState => ({
+				...prevState,
+				signUpError: null
+			}))
+			this.props.navigation.navigate("MyClubs");
+		}).catch((err) => {
+			//Something went wrong, set error
+			this.setState(prevState => ({
+				...prevState,
+				signUpError: err.message
+			}))
+		})
 	}
 	render(){
 		
@@ -115,25 +136,10 @@ class SignUpScreen extends React.Component {
 				<TextInput placeholder='Password...' textContentType='password' value={this.state.password} secureTextEntry={true} autoFocus={false} 
 					onChangeText={text => this.onPasswordChange(text)}/>
 				<Button color = "#6600bb"title='Sign up!' onPress={() => this.onLoginPress()}/>
-				{this.props.signUpError ? <Text style={styles.errorText}>{this.props.signUpError}</Text> : null}
+				{this.state.signUpError ? <Text style={styles.errorText}>{this.state.signUpError}</Text> : null}
 			</ScrollView>
 		)
 	}
 }
 
-//Maps redux stuff
-function mapStateToProps(state) {
-	return {
-		signUpError: state.auth.signUpError,
-		auth: state.firebase.auth
-	}
-}
-
-function mapDispatchToProps(dispatch) {
-	return {
-		signUp: (creds) => dispatch(signUp(creds)),
-		changeSignUpError: (err) => dispatch(changeSignUpError(err))
-	}
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(SignUpScreen)
+export default compose(withFirebase)(SignUpScreen)
