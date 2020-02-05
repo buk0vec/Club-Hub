@@ -17,7 +17,9 @@ import {
 } from 'react-native';
 
 import { signIn } from '../redux/actions'
-import { connect } from 'react-redux'
+import { compose } from 'redux'
+import { connect } from 'react-redux';
+import { withFirebase } from 'react-redux-firebase'
 const styles = StyleSheet.create({
   mainText: {
     fontSize: 50,
@@ -48,7 +50,8 @@ class SignInScreen extends React.Component {
 		super(props);
 		this.state = {
 			email: '',
-			password: ''
+			password: '',
+			authError: null
 		}
 		YellowBox.ignoreWarnings(['Setting a timer']);
 		console.ignoredYellowBox = ['Setting a timer'];
@@ -70,10 +73,27 @@ class SignInScreen extends React.Component {
 	//When login is pressed, dismiss keyboard and log in
 	onLoginPress(){
 		Keyboard.dismiss();
-		//console.log('Email =', this.state.email);
-		//console.log('Password =', this.state.password);
-		this.props.signIn(this.state);
-		//console.log(this.props.auth);
+		//Using RRF's firebase login
+		this.props.firebase.login({
+			email: this.state.email,
+			password: this.state.password
+		}).then(() => {
+			//Success, navigate
+			console.log("Major mf dubs");
+			this.setState(prevState => ({
+				...prevState,
+				authError: null
+			}))
+			this.props.navigation.navigate("MyClubs");
+		}
+		).catch((err) => {
+			//Error, display error and don't navigate
+			console.log("Frick.")
+			this.setState(prevState => ({
+				...prevState,
+				authError: err.message
+			}))
+		});
 	}
 	render(){
 		return(
@@ -90,24 +110,10 @@ class SignInScreen extends React.Component {
 					inputEmail: this.state.email,
 					inputPassword: this.state.password
 				})}/>
-				{this.props.authError ? <Text style={styles.errorText}>{this.props.authError}</Text> : null}
+				{this.state.authError ? <Text style={styles.errorText}>{this.state.authError}</Text> : null}
 			</View>
 		)
 	}
 }
 
-//Maps redux stuff
-function mapStateToProps(state) {
-	return {
-		authError: state.auth.authError,
-		auth: state.firebase.auth
-	}
-}
-
-function mapDispatchToProps(dispatch) {
-	return {
-		signIn: (creds) => dispatch(signIn(creds))
-	}
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(SignInScreen)
+export default compose(withFirebase)(SignInScreen)
