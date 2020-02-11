@@ -2,6 +2,7 @@
   App.js
   ./screens: contains all the screens
   ./redux: contains all the redux stuff
+  Devon says hi
  */
 
 import React from 'react';
