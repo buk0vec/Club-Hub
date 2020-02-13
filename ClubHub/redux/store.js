@@ -8,7 +8,7 @@ import fb from './fb';
 import thunk from 'redux-thunk';
 import { reduxFirestore, getFirestore, firestoreReducer } from 'redux-firestore'
 import { reactReduxFirebase, getFirebase, firebaseReducer } from 'react-redux-firebase'
-import { SET_DESCR_ID, setClubDescr, /*LOGIN_SUCCESS, LOGIN_ERROR, LOGOUT_SUCCESS, SIGNUP_SUCCESS, SIGNUP_ERROR, , signIn, signOut, signUp,
+import { SET_DESCR_ID, SET_MC_DESCR_ID /*LOGIN_SUCCESS, LOGIN_ERROR, LOGOUT_SUCCESS, SIGNUP_SUCCESS, SIGNUP_ERROR, , signIn, signOut, signUp,
 CHANGE_SIGNUP_ERROR, changeSignUpError */ } from './actions'
 import NavigationService from '../screens/NavigationService';
 
@@ -20,7 +20,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 const initialState = {
 	authError: null,
 	signUpError: null,
-	descrId: ''
+	descrId: '',
+	mcDescrId: ''
 }
 
 const middlewares = [
@@ -42,6 +43,9 @@ function clubReducer(state = initialState, payload) {
 		case SET_DESCR_ID:
 			console.log("ID_SET: ", payload.id);
 			return Object.assign({}, state, {descrId: payload.id}) //Changes state.clubs.descrId
+		case SET_MC_DESCR_ID:
+			console.log("MC_ID_SET: ", payload.id);
+			return Object.assign({}, state, {mcDescrId: payload.id})
 	} 
 	return state;
 }

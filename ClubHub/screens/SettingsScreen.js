@@ -22,9 +22,12 @@ import { connect } from 'react-redux'
 
 const styles = StyleSheet.create({
   mainText: {
-    fontSize: 40,
-    fontSize: 35,
-    color: '#000000',
+    fontSize: 50,
+    backgroundColor: '#8800ff',
+    color: "#f5f5f5"
+  },
+  nameText: {
+  	fontSize: 40
   }
 });
 
@@ -41,7 +44,7 @@ class SettingsScreen extends React.Component {
     return (
       <View>
         <Text style={styles.mainText}>This is the Settings Screen!</Text>
-        <Text style={styles.mainText}>{this.props.user.firstName + ' ' + this.props.user.lastName}</Text>
+        <Text style={styles.nameText}>{this.props.user.firstName + ' ' + this.props.user.lastName}</Text>
         <Button color="#6600bb" title="Sign Out!" onPress={() => this.onSignOutPress()} />
       </View>
     );
