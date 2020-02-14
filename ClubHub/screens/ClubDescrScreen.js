@@ -18,6 +18,7 @@ import {
 import { ScrollView } from 'react-navigation';
 
 import * as firebase from 'firebase';
+import { fb } from '../redux/fb';
 import 'firebase/firestore';
 import { compose } from 'redux'
 import { connect } from 'react-redux'
@@ -56,6 +57,13 @@ class ClubDescrScreen extends React.Component {
   Separator() {
     return <View style={styles.separator} />;
   }
+  followClub() {
+    var cloudFn = fb.functions().httpsCallable('followClub');
+    cloudFn({club: this.props.clubId}).then(function(result) {
+  // Read result of the Cloud Function.
+  });
+  }
+
   //Render the bitty
   render() {
     //If the club info is loading, display loading text. Else, display data
@@ -67,6 +75,8 @@ class ClubDescrScreen extends React.Component {
     else {
       return (
        <ScrollView>
+        <Button color="#7700ee" title='Join Club'
+        onPress={() => this.followClub()}/>
         <Text style={styles.clubText}>{this.props.club.clubName}</Text>
         <Text style={styles.clubText}>When: {this.props.club.when}</Text>
         <Text style={styles.clubText}>In Room: {this.props.club.roomNumber}</Text>
@@ -81,6 +91,7 @@ class ClubDescrScreen extends React.Component {
 function mapStateToProps(state) {
   return {
     club: state.firestore.data.clubs[store.getState().clubs.descrId],
+    clubId: state.clubs.descrId
   }
 }
 
