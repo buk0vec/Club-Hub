@@ -11,7 +11,7 @@ import {
 
 import * as firebase from 'firebase';
 import 'firebase/firestore';
-import { withFirebase, firestoreConnect, populate } from 'react-redux-firebase'
+import { withFirebase, firestoreConnect, populate, isLoaded, isEmpty } from 'react-redux-firebase'
 import { compose } from 'redux'
 import { store } from '../redux/store'
 import { connect } from 'react-redux'
@@ -65,8 +65,11 @@ export class MyClubsScreen extends React.Component {
   render() {
     let ClubList;
     //If the clubs haven't been grabbed yet, display loading text
-    if(this.props.userClubs == null){
+    if(!isLoaded(this.props.userClubs)){
       ClubList = <Text style={styles.clubText}>Loading...</Text>;
+    }
+    else if(isEmpty(this.props.userClubs)) {
+    	ClubList = <Text style={styles.clubText}> You don't have any clubs yet!</Text>;
     }
     //For each item in this.props.clubs, create a button with the club name. When it's pressed, pass the club into onClubPress()
     else {
