@@ -16,7 +16,9 @@ import {
 	Keyboard
 } from 'react-native';
 
+import NavigationService from './NavigationService'
 import { signIn } from '../redux/actions'
+import { store } from '../redux/store'
 import { compose } from 'redux'
 import { connect } from 'react-redux';
 import { withFirebase } from 'react-redux-firebase'
@@ -51,7 +53,8 @@ class SignInScreen extends React.Component {
 		this.state = {
 			email: '',
 			password: '',
-			authError: null
+			authError: null,
+			buttonDisable: false
 		}
 		YellowBox.ignoreWarnings(['Setting a timer']);
 		console.ignoredYellowBox = ['Setting a timer'];
@@ -73,27 +76,41 @@ class SignInScreen extends React.Component {
 	//When login is pressed, dismiss keyboard and log in
 	onLoginPress(){
 		Keyboard.dismiss();
+		this.setState(prevState => ({
+			...prevState,
+			buttonDisable: true
+		}));
 		//Using RRF's firebase login
 		this.props.firebase.login({
 			email: this.state.email,
 			password: this.state.password
 		}).then(() => {
 			//Success, navigate
-			console.log("Major mf dubs");
+			console.log("Login Success");
 			this.setState(prevState => ({
 				...prevState,
 				authError: null
 			}))
-			this.props.navigation.navigate("MyClubs");
+			this.waitUntilNavigate()
 		}
 		).catch((err) => {
 			//Error, display error and don't navigate
-			console.log("Frick.")
+			console.log("Login failed:", err.message)
 			this.setState(prevState => ({
 				...prevState,
-				authError: err.message
+				authError: err.message,
+				buttonDisable: false
 			}))
 		});
+	}
+	waitUntilNavigate() {
+		if(typeof store.getState().firebase.auth.uid !== 'undefined') {
+			console.log("Navigating...")
+			NavigationService.navigate("MyClubs");
+		}
+		else {
+			setTimeout(this.waitUntilNavigate, 250)
+		}
 	}
 	render(){
 		return(
@@ -104,7 +121,7 @@ class SignInScreen extends React.Component {
 				<Text style={styles.loginText}>Password</Text>
 				<TextInput placeholder='Password...' textContentType='password' secureTextEntry={true} autoFocus={false} 
 					onChangeText={text => this.onPasswordChange(text)}/>
-				<Button color="#6600bb" title='Sign in' onPress={() => this.onLoginPress()}/>
+				<Button color="#6600bb" title='Sign in' onPress={() => this.onLoginPress()} disabled={this.state.buttonDisable}/>
 				<Text style={styles.mainText}>Or</Text>
 				<Button color="#6600bb" title='Create a new account' onPress={() => this.props.navigation.navigate("SignUp", {
 					inputEmail: this.state.email,

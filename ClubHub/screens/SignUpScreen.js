@@ -21,6 +21,8 @@ import { signUp, changeSignUpError } from '../redux/actions'
 import { compose } from 'redux';
 import { connect } from 'react-redux'
 import { withFirebase } from 'react-redux-firebase'
+import { store } from '../redux/store'
+import NavigationService from './NavigationService'
 const styles = StyleSheet.create({
   mainText: {
     fontSize: 50,
@@ -58,7 +60,8 @@ class SignUpScreen extends React.Component {
 			firstName: '',
 			lastName: '',
 			grade: '',
-			signUpError: null
+			signUpError: null,
+			buttonDisable: false
 		}
 		YellowBox.ignoreWarnings(['Setting a timer']);
 		console.ignoredYellowBox = ['Setting a timer'];
@@ -99,24 +102,40 @@ class SignUpScreen extends React.Component {
 			}))
 			return;
 		}
+		this.setState(prevState => ({
+			...prevState,
+			buttonDisable: true
+		}))
 		//Use RRF's firebase instance to create a user
 		this.props.firebase.createUser(
 			{email: this.state.email, password: this.state.password},
 			{firstName: this.state.firstName, lastName: this.state.lastName}
 		).then(() => {
 			//Success, navigate and remove error state
+			console.log("Signed up!")
 			this.setState(prevState => ({
 				...prevState,
 				signUpError: null
 			}))
-			this.props.navigation.navigate("MyClubs");
+			this.waitUntilNavigate()
 		}).catch((err) => {
 			//Something went wrong, set error
+			console.log("Sign up failed:", err.message)
 			this.setState(prevState => ({
 				...prevState,
-				signUpError: err.message
+				signUpError: err.message,
+				buttonDisable: false
 			}))
 		})
+	}
+		waitUntilNavigate() {
+		if(typeof store.getState().firebase.auth.uid !== 'undefined') {
+			console.log("Navigating...")
+			NavigationService.navigate("MyClubs");
+		}
+		else {
+			setTimeout(this.waitUntilNavigate, 250)
+		}
 	}
 	render(){
 		
@@ -135,7 +154,7 @@ class SignUpScreen extends React.Component {
 				<Text style={styles.loginText}>Password</Text>
 				<TextInput placeholder='Password...' textContentType='password' value={this.state.password} secureTextEntry={true} autoFocus={false} 
 					onChangeText={text => this.onPasswordChange(text)}/>
-				<Button color = "#6600bb"title='Sign up!' onPress={() => this.onLoginPress()}/>
+				<Button color = "#6600bb"title='Sign up!' onPress={() => this.onLoginPress()} disabled={this.state.buttonDisable}/>
 				{this.state.signUpError ? <Text style={styles.errorText}>{this.state.signUpError}</Text> : null}
 			</ScrollView>
 		)
