@@ -15,7 +15,6 @@ import { compose } from 'redux'
 import { store } from '../redux/store'
 import { connect } from 'react-redux'
 import { setMCDescrId } from '../redux/actions' //Sets the description ID for ClubDescrScreen
-import { setMCDescrId } from '../redux/actions' //Sets the description ID for ClubDescrScreen
 import { styles } from './Styles.js' //Styling for components
 
 const populates = [{child: 'club', root: 'clubs', keyProp: 'id'}]

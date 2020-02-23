@@ -17,22 +17,7 @@ import { store } from '../redux/store'
 import { withFirebase } from 'react-redux-firebase'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-<<<<<<< Updated upstream
-
-
-const styles = StyleSheet.create({
-  mainText: {
-    fontSize: 50,
-    backgroundColor: '#8800ff',
-    color: "#f5f5f5"
-  },
-  nameText: {
-  	fontSize: 40
-  }
-});
-=======
 import { styles } from './Styles.js' //Styling for components
->>>>>>> Stashed changes
 
 class SettingsScreen extends React.Component {
   componentDidMount(){
