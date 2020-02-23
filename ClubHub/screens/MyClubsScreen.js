@@ -3,11 +3,18 @@ import {
 	Text,
 	View,
 	Button,
+<<<<<<< Updated upstream
 	StyleSheet,
   YellowBox
+=======
+  YellowBox,
+  FlatList,
+  TouchableOpacity
+>>>>>>> Stashed changes
 } from 'react-native';
 
 import { connect } from 'react-redux'
+<<<<<<< Updated upstream
 
 const styles = StyleSheet.create({
   mainText: {
@@ -16,6 +23,10 @@ const styles = StyleSheet.create({
     color: '#000000',
   }
 });
+=======
+import { setMCDescrId } from '../redux/actions' //Sets the description ID for ClubDescrScreen
+import { styles } from './Styles.js' //Styling for components
+>>>>>>> Stashed changes
 
 export default class MyClubsScreen extends React.Component {
   constructor(props) {

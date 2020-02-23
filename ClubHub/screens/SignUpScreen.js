@@ -8,7 +8,6 @@ import React from 'react';
 import {
 	View,
 	Text,
-	StyleSheet,
 	TextInput,
 	Login,
 	Button,
@@ -21,6 +20,7 @@ import { signUp, changeSignUpError } from '../redux/actions'
 import { compose } from 'redux';
 import { connect } from 'react-redux'
 import { withFirebase } from 'react-redux-firebase'
+<<<<<<< Updated upstream
 const styles = StyleSheet.create({
   mainText: {
     fontSize: 50,
@@ -45,6 +45,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5'
   },  
 });
+=======
+import { store } from '../redux/store'
+import NavigationService from './NavigationService'
+import { styles } from './Styles' //Styling for components
+>>>>>>> Stashed changes
 
 class SignUpScreen extends React.Component {
 	//Sets default state, and if there was a username and password in the signin form beforehand it carries it over to the signup form

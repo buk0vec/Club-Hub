@@ -8,7 +8,6 @@ import React from 'react';
 import {
 	View,
 	Text,
-	StyleSheet,
 	TextInput,
 	Login,
 	Button,
@@ -20,30 +19,7 @@ import { signIn } from '../redux/actions'
 import { compose } from 'redux'
 import { connect } from 'react-redux';
 import { withFirebase } from 'react-redux-firebase'
-const styles = StyleSheet.create({
-  mainText: {
-    fontSize: 50,
-    backgroundColor: '#9900ff',
-    color: "#ededed"
-  },
-  loginText: {
-    fontSize: 30
-  },
-  errorText: {
-	fontSize: 25,
-	color: 'red',
-	textAlign: 'center'
-  },
-  /*button: {
-    padding: 10,
-   	color: '#7700ee'
-  },*/
-  separator: {
-    borderBottomColor: '#737373',
-    borderBottomWidth: StyleSheet.hairlineWidth * 2,
-    backgroundColor: '#f5f5f5'
-  },  
-});
+import { styles } from './Styles.js' //Styling for components
 
 class SignInScreen extends React.Component {
 	constructor(props){
