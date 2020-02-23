@@ -47,13 +47,7 @@ import {zoomIn} from 'react-navigation-transitions';
 import createAnimatedSwitchNavigator from 'react-navigation-animated-switch';
 import {Transition} from 'react-native-reanimated'
 
-const styles = StyleSheet.create({
-  mainText: {
-    fontSize: 40,
-    fontSize: 35,
-    color: '#000000',
-  }
-});
+import { Provider as PaperProvider } from 'react-native-paper';
 
 const MyClubsNavigator = createStackNavigator({
   MyClubs: {screen: MyClubsScreen, navigationOptions: {header: null}},
@@ -145,10 +139,12 @@ class AppContainer extends React.Component {
 			<Provider store={store}>
         <ReactReduxFirebaseProvider {...rrfProps}>
           <PersistGate loading={<PersistLoadingScreen />} persistor={persistor} >
-				  <Navigation ref={navigatorRef => {
-          NavigationService.setTopLevelNavigator(navigatorRef);
-          }}
-        />
+            <PaperProvider>
+				      <Navigation ref={navigatorRef => {
+                NavigationService.setTopLevelNavigator(navigatorRef);
+              }}
+              />
+            </PaperProvider>
         </PersistGate>
         </ReactReduxFirebaseProvider>
 			</Provider>

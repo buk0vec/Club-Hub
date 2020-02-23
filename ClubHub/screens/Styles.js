@@ -44,6 +44,7 @@ export const styles = StyleSheet.create({
   	errorText: {
 		fontSize: 25,
 		color: 'red',
-		textAlign: 'center'
+		textAlign: 'center',
+		flex: 1
 	},
 });
