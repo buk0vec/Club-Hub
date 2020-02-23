@@ -7,7 +7,6 @@ import {
 	Text,
 	View,
 	Button,
-	StyleSheet,
   FlatList,
   YellowBox,
   TouchableOpacity,
@@ -23,26 +22,7 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { firestoreConnect } from 'react-redux-firebase'
 import { store } from '../redux/store'
-
-//StyleSheet for components
-const styles = StyleSheet.create({
-  mainText: {
-    fontSize: 50,
-    backgroundColor: '#78acff'
-  },
-  clubText: {
-    fontSize: 30
-  },
-  button: {
-    padding: 10,
-    backgroundColor: '#f5f5f5'
-  },
-  separator: {
-    borderBottomColor: '#737373',
-    borderBottomWidth: StyleSheet.hairlineWidth * 2,
-    backgroundColor: '#f5f5f5'
-  },  
-});
+import { styles } from './Styles.js' //Styling for components
 
 class ClubDescrScreen extends React.Component {
   constructor(props) {

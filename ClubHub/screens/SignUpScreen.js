@@ -8,7 +8,6 @@ import React from 'react';
 import {
 	View,
 	Text,
-	StyleSheet,
 	TextInput,
 	Login,
 	Button,
@@ -23,30 +22,7 @@ import { connect } from 'react-redux'
 import { withFirebase } from 'react-redux-firebase'
 import { store } from '../redux/store'
 import NavigationService from './NavigationService'
-const styles = StyleSheet.create({
-  mainText: {
-    fontSize: 50,
-    backgroundColor: '#8800ff',
-    color: '#eeeeee'
-  },
-  loginText: {
-    fontSize: 30
-  },
-  errorText: {
-	fontSize: 25,
-	color: 'red',
-	textAlign: 'center'
-  },
-  button: {
-    padding: 10,
-    backgroundColor: '#f5f5f5'
-  },
-  separator: {
-    borderBottomColor: '#737373',
-    borderBottomWidth: StyleSheet.hairlineWidth * 2,
-    backgroundColor: '#f5f5f5'
-  },  
-});
+import { styles } from './Styles' //Styling for components
 
 class SignUpScreen extends React.Component {
 	//Sets default state, and if there was a username and password in the signin form beforehand it carries it over to the signup form

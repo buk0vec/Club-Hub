@@ -7,7 +7,6 @@ import React from 'react';
 import {
   Text,
   View,
-  StyleSheet,
   Button
 } from 'react-native';
 
@@ -18,6 +17,7 @@ import { store } from '../redux/store'
 import { withFirebase } from 'react-redux-firebase'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
+<<<<<<< Updated upstream
 
 
 const styles = StyleSheet.create({
@@ -30,6 +30,9 @@ const styles = StyleSheet.create({
   	fontSize: 40
   }
 });
+=======
+import { styles } from './Styles.js' //Styling for components
+>>>>>>> Stashed changes
 
 class SettingsScreen extends React.Component {
   componentDidMount(){

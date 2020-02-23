@@ -3,7 +3,6 @@ import {
 	Text,
 	View,
 	Button,
-	StyleSheet,
   YellowBox,
   FlatList,
   TouchableOpacity
@@ -16,26 +15,8 @@ import { compose } from 'redux'
 import { store } from '../redux/store'
 import { connect } from 'react-redux'
 import { setMCDescrId } from '../redux/actions' //Sets the description ID for ClubDescrScreen
-
-const styles = StyleSheet.create({
-  mainText: {
-    fontSize: 50,
-    backgroundColor: '#8800ff',
-    color: "#f5f5f5"
-  },
-  clubText: {
-    fontSize: 30,
-  },
-  button: {
-    padding: 10,
-    backgroundColor: '#f5f5f5'
-  },
-  separator: {
-    borderBottomColor: '#737373',
-    borderBottomWidth: StyleSheet.hairlineWidth * 2,
-    backgroundColor: '#f5f5f5'
-  },  
-});
+import { setMCDescrId } from '../redux/actions' //Sets the description ID for ClubDescrScreen
+import { styles } from './Styles.js' //Styling for components
 
 const populates = [{child: 'club', root: 'clubs', keyProp: 'id'}]
 
