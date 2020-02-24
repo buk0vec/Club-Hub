@@ -7,43 +7,19 @@ import React from 'react';
 
 import {
 	View,
-	Text,
-	StyleSheet,
-	TextInput,
-	Login,
-	Button,
 	YellowBox,
 	Keyboard
 } from 'react-native';
 
+import NavigationService from './NavigationService'
 import { signIn } from '../redux/actions'
+import { store } from '../redux/store'
 import { compose } from 'redux'
 import { connect } from 'react-redux';
 import { withFirebase } from 'react-redux-firebase'
-const styles = StyleSheet.create({
-  mainText: {
-    fontSize: 50,
-    backgroundColor: '#9900ff',
-    color: "#ededed"
-  },
-  loginText: {
-    fontSize: 30
-  },
-  errorText: {
-	fontSize: 25,
-	color: 'red',
-	textAlign: 'center'
-  },
-  /*button: {
-    padding: 10,
-   	color: '#7700ee'
-  },*/
-  separator: {
-    borderBottomColor: '#737373',
-    borderBottomWidth: StyleSheet.hairlineWidth * 2,
-    backgroundColor: '#f5f5f5'
-  },  
-});
+import { styles } from './Styles.js' //Styling for components
+import { Appbar, TextInput, Text, Button } from 'react-native-paper'
+import Logo from '../components/Logo';
 
 class SignInScreen extends React.Component {
 	constructor(props){
@@ -51,7 +27,8 @@ class SignInScreen extends React.Component {
 		this.state = {
 			email: '',
 			password: '',
-			authError: null
+			authError: null,
+			buttonDisable: false
 		}
 		YellowBox.ignoreWarnings(['Setting a timer']);
 		console.ignoredYellowBox = ['Setting a timer'];
@@ -73,44 +50,57 @@ class SignInScreen extends React.Component {
 	//When login is pressed, dismiss keyboard and log in
 	onLoginPress(){
 		Keyboard.dismiss();
+		this.setState(prevState => ({
+			...prevState,
+			buttonDisable: true
+		}));
 		//Using RRF's firebase login
 		this.props.firebase.login({
 			email: this.state.email,
 			password: this.state.password
 		}).then(() => {
 			//Success, navigate
-			console.log("Major mf dubs");
+			console.log("Login Success");
 			this.setState(prevState => ({
 				...prevState,
 				authError: null
 			}))
-			this.props.navigation.navigate("MyClubs");
+			this.waitUntilNavigate()
 		}
 		).catch((err) => {
 			//Error, display error and don't navigate
-			console.log("Frick.")
+			console.log("Login failed:", err.message)
 			this.setState(prevState => ({
 				...prevState,
-				authError: err.message
+				authError: err.message,
+				buttonDisable: false
 			}))
 		});
 	}
+	waitUntilNavigate() {
+		if(typeof store.getState().firebase.auth.uid !== 'undefined') {
+			console.log("Navigating...")
+			NavigationService.navigate("MyClubs");
+		}
+		else {
+			setTimeout(this.waitUntilNavigate, 250)
+		}
+	}
 	render(){
 		return(
-			<View>
-				<Text style={styles.mainText}>Sign In</Text>
-				<Text style={styles.loginText}>Email</Text>
-				<TextInput placeholder='ex. devon@sux.com' autoFocus={false} textContentType='emailAddress' onChangeText={text => this.onEmailChange(text)}/>
-				<Text style={styles.loginText}>Password</Text>
-				<TextInput placeholder='Password...' textContentType='password' secureTextEntry={true} autoFocus={false} 
+			<View style={{flex: 1, justifyContent: 'center'}}>
+				<Logo />
+				<TextInput mode='outlined' label='Email' placeholder='ex. devon@sux.com' autoFocus={false} textContentType='emailAddress' 
+					onChangeText={text => this.onEmailChange(text)}/>
+				<TextInput mode='outlined' label='Password' placeholder='Password...' textContentType='password' secureTextEntry={true} autoFocus={false} 
 					onChangeText={text => this.onPasswordChange(text)}/>
-				<Button color="#6600bb" title='Sign in' onPress={() => this.onLoginPress()}/>
-				<Text style={styles.mainText}>Or</Text>
-				<Button color="#6600bb" title='Create a new account' onPress={() => this.props.navigation.navigate("SignUp", {
+				<Button color="#6600bb" onPress={() => this.onLoginPress()} disabled={this.state.buttonDisable}>Sign In</Button>
+				<Button color="#6600bb" onPress={() => this.props.navigation.navigate("SignUp", {
 					inputEmail: this.state.email,
 					inputPassword: this.state.password
-				})}/>
-				{this.state.authError ? <Text style={styles.errorText}>{this.state.authError}</Text> : null}
+				})}>Create a New Account</Button>
+				<View style={{flex: 1}}></View>
+				{this.state.authError ? <Text style={styles.errorText}>{this.state.authError}</Text> : <View style={{flex: 1}}></View>}
 			</View>
 		)
 	}

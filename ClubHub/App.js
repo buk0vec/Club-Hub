@@ -10,7 +10,8 @@ import {
   View,
   Button,
   StyleSheet,
-  FlatList
+  FlatList,
+  YellowBox
 } from 'react-native';
 import {
   createAppContainer,
@@ -36,6 +37,7 @@ import NavigationService from './screens/NavigationService';
 import AuthLoadingScreen from './screens/AuthLoadingScreen';
 import PersistLoadingScreen from './screens/PersistLoadingScreen'
 import SignUpScreen from './screens/SignUpScreen'
+import MyClubsDescrScreen from './screens/MyClubsDescrScreen'
 
 import { store, persistor } from './redux/store';
 import { Provider, connect } from 'react-redux'
@@ -45,13 +47,13 @@ import {zoomIn} from 'react-navigation-transitions';
 import createAnimatedSwitchNavigator from 'react-navigation-animated-switch';
 import {Transition} from 'react-native-reanimated'
 
-const styles = StyleSheet.create({
-  mainText: {
-    fontSize: 40,
-    fontSize: 35,
-    color: '#000000',
-  }
-});
+import { Provider as PaperProvider } from 'react-native-paper';
+
+const MyClubsNavigator = createStackNavigator({
+  MyClubs: {screen: MyClubsScreen, navigationOptions: {header: null}},
+  MyClubsDescr: {screen: MyClubsDescrScreen}
+})
+
 
 const DetailsNavigator = createStackNavigator({
 	ClubDirectory: {screen: ClubDirectoryScreen, navigationOptions: {header: null}},
@@ -59,7 +61,7 @@ const DetailsNavigator = createStackNavigator({
 });
 
 const TabNavigator = createBottomTabNavigator({
-  MyClubs: {screen: MyClubsScreen},
+  MyClubs: MyClubsNavigator,
   ClubDirectory: DetailsNavigator,
   Settings: {screen: SettingsScreen},
 },{
@@ -75,7 +77,7 @@ const TabNavigator = createBottomTabNavigator({
 
 const AuthNavigator = createStackNavigator({
   SignIn: {screen: SignInScreen, navigationOptions: {header: null}},
-  SignUp: {screen: SignUpScreen}
+  SignUp: {screen: SignUpScreen, path: 'signup'}
 }, {
   initialRouteName: 'SignIn'
 });
@@ -124,19 +126,33 @@ const rrfProps = {
 
 //This in theory shouldn't change, <Provider> allows access to store and <ReactReduxFirebaseProvider> allows fb access, <PersistGate> allows for 
 //persistent data.
-export default class App extends React.Component {
+class AppContainer extends React.Component {
+  constructor(props) {
+    super(props);
+    YellowBox.ignoreWarnings(['Setting a timer']);
+    console.ignoredYellowBox = [
+      'Setting a timer'
+    ];
+  }
 	render() {
 		return (
 			<Provider store={store}>
         <ReactReduxFirebaseProvider {...rrfProps}>
           <PersistGate loading={<PersistLoadingScreen />} persistor={persistor} >
-				  <Navigation ref={navigatorRef => {
-          NavigationService.setTopLevelNavigator(navigatorRef);
-          }}
-        />
+            <PaperProvider>
+				      <Navigation ref={navigatorRef => {
+                NavigationService.setTopLevelNavigator(navigatorRef);
+              }}
+              />
+            </PaperProvider>
         </PersistGate>
         </ReactReduxFirebaseProvider>
 			</Provider>
 		)
 	}
+}
+
+export default () => {
+  const prefix = 'clubhub://';
+  return <AppContainer uriPrefix={prefix} />
 }

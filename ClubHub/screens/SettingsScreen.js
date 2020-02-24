@@ -7,7 +7,6 @@ import React from 'react';
 import {
   Text,
   View,
-  StyleSheet,
   Button
 } from 'react-native';
 
@@ -18,15 +17,7 @@ import { store } from '../redux/store'
 import { withFirebase } from 'react-redux-firebase'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-
-
-const styles = StyleSheet.create({
-  mainText: {
-    fontSize: 40,
-    fontSize: 35,
-    color: '#000000',
-  }
-});
+import { styles } from './Styles.js' //Styling for components
 
 class SettingsScreen extends React.Component {
   componentDidMount(){
@@ -41,7 +32,7 @@ class SettingsScreen extends React.Component {
     return (
       <View>
         <Text style={styles.mainText}>This is the Settings Screen!</Text>
-        <Text style={styles.mainText}>{this.props.user.firstName + ' ' + this.props.user.lastName}</Text>
+        <Text style={styles.nameText}>{this.props.user.firstName + ' ' + this.props.user.lastName}</Text>
         <Button color="#6600bb" title="Sign Out!" onPress={() => this.onSignOutPress()} />
       </View>
     );

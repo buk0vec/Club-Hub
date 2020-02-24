@@ -14,7 +14,8 @@ export const LOGIN_ERROR = 'LOGIN_ERROR';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';
 export const SIGNUP_ERROR = 'SIGNUP_ERROR';
-export const CHANGE_SIGNUP_ERROR = 'CHANGE_SIGNUP_ERROR'
+export const CHANGE_SIGNUP_ERROR = 'CHANGE_SIGNUP_ERROR';
+export const SET_MC_DESCR_ID = 'SET_MC_DESCR_ID';
 
 //setDescrId, takes ID for what club description should be shown, passes it to the reducer
 export function setDescrId(id) {
@@ -24,6 +25,12 @@ export function setDescrId(id) {
 	};
 }
 
+export function setMCDescrId(id) {
+	return {
+		type: SET_MC_DESCR_ID,
+		id
+	};
+}
 /*
 	Deprecated actions!
 	Replaced by using RRF's auth

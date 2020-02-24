@@ -8,7 +8,6 @@ import {
 	Text,
 	View,
 	Button,
-	StyleSheet,
   YellowBox,
   TouchableOpacity,
   Alert,
@@ -25,26 +24,7 @@ import { connect } from 'react-redux'
 import { firestoreConnect } from 'react-redux-firebase'
 import { setDescrId } from '../redux/actions' //Sets the description ID for ClubDescrScreen
 import { store } from '../redux/store' //Store import for debug
-
-const styles = StyleSheet.create({
-  mainText: {
-    fontSize: 50,
-    backgroundColor: '#8800ff',
-    color: "#f5f5f5"
-  },
-  clubText: {
-    fontSize: 30,
-  },
-  button: {
-    padding: 10,
-    backgroundColor: '#f5f5f5'
-  },
-  separator: {
-    borderBottomColor: '#737373',
-    borderBottomWidth: StyleSheet.hairlineWidth * 2,
-    backgroundColor: '#f5f5f5'
-  },  
-});
+import { styles } from './Styles.js' //Styling for components
 
 class ClubDirectoryScreen extends React.Component {
   constructor(props) {

@@ -6,25 +6,11 @@
 
 import React from 'react';
 
-import {View, Text, StyleSheet, YellowBox} from 'react-native';
+import {View, Text, YellowBox} from 'react-native';
 
 import { connect } from 'react-redux'
-
 import { store } from '../redux/store'
-
-const styles = StyleSheet.create({
-  mainText: {
-    fontSize: 50,
-	color: 'white'
-  },
-
-container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#8800ff'
-  },
-});
+import { styles } from './Styles' //Styling for components
 
 class AuthLoadingScreen extends React.Component {
 	constructor(props) {
