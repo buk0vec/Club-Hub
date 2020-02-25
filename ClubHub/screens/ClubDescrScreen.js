@@ -47,11 +47,10 @@ class ClubDescrScreen extends React.Component {
     else {
       return (
        <ScrollView>
-        <Text style={styles.clubText}>{this.props.club.clubName}</Text>
-        <Text style={styles.clubText}>When: {this.props.club.when}</Text>
-        <Text style={styles.clubText}>In Room: {this.props.club.roomNumber}</Text>
-        <Text style={styles.clubText}>On: {this.props.club.day}</Text>
-        <Text style={styles.clubText}>Description: {this.props.club.shortDesc}</Text>
+        <Text style={styles.nameText}>{this.props.club.clubName}</Text>
+        <Text style={styles.clubText}>Rm. {this.props.club.roomNumber}</Text>
+        <Text style={styles.clubText}>We meet at {this.props.club.when} every {this.props.club.day}</Text>
+        <Text style={styles.clubText}>{this.props.club.shortDesc}</Text>
       </ScrollView>
       )
     }
