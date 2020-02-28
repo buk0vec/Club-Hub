@@ -24,6 +24,9 @@ import { connect } from 'react-redux'
 import { firestoreConnect } from 'react-redux-firebase'
 import { store } from '../redux/store'
 import { styles } from './Styles.js' //Styling for components
+import fb from '../redux/fb'
+
+
 
 class ClubDescrScreen extends React.Component {
   constructor(props) {
@@ -37,13 +40,19 @@ class ClubDescrScreen extends React.Component {
   Separator() {
     return <View style={styles.separator} />;
   }
-  followClub() {
-    var cloudFn = fb.functions().httpsCallable('followClub');
-    cloudFn({club: this.props.clubId}).then(function(result) {
-  // Read result of the Cloud Function.
-  });
+  TogglingButton(){
+    var joinClub = fb.functions().httpsCallable('joinClub');
+    var leaveClub = fb.functions().httpsCallable('leaveClub');
+    let members = this.props.club.members;
+    console.log("Members:", members)
+    if(members.includes(this.props.auth.uid)){
+      return <Button color="#7700ee" title='Leave Club'
+        onPress={() => leaveClub({club:store.getState().clubs.descrId}).catch((error)=>console.log(error))}/>;
+    }else{
+      return <Button color="#7700ee" title='Join Club'
+        onPress={() => joinClub({club:store.getState().clubs.descrId}).catch((error)=>console.log(error))}/>;
+    }
   }
-
   //Render the bitty
   render() {
     //If the club info is loading, display loading text. Else, display data
@@ -62,6 +71,7 @@ class ClubDescrScreen extends React.Component {
         <Text style={styles.clubText}>In Room: {this.props.club.roomNumber}</Text>
         <Text style={styles.clubText}>On: {this.props.club.day}</Text>
         <Text style={styles.clubText}>Description: {this.props.club.shortDesc}</Text>
+        {this.TogglingButton()}
       </ScrollView>
       )
     }
@@ -71,7 +81,7 @@ class ClubDescrScreen extends React.Component {
 function mapStateToProps(state) {
   return {
     club: state.firestore.data.clubs[store.getState().clubs.descrId],
-    clubId: state.clubs.descrId
+    auth: state.firebase.auth
   }
 }
 
