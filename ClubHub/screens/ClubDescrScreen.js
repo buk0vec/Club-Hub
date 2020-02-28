@@ -17,14 +17,13 @@ import {
 import { ScrollView } from 'react-navigation';
 
 import * as firebase from 'firebase';
-import { fb } from '../redux/fb';
+import fb from '../redux/fb';
 import 'firebase/firestore';
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { firestoreConnect } from 'react-redux-firebase'
 import { store } from '../redux/store'
 import { styles } from './Styles.js' //Styling for components
-import fb from '../redux/fb'
 
 
 
@@ -64,8 +63,6 @@ class ClubDescrScreen extends React.Component {
     else {
       return (
        <ScrollView>
-        <Button color="#7700ee" title='Join Club'
-        onPress={() => this.followClub()}/>
         <Text style={styles.clubText}>{this.props.club.clubName}</Text>
         <Text style={styles.clubText}>When: {this.props.club.when}</Text>
         <Text style={styles.clubText}>In Room: {this.props.club.roomNumber}</Text>
