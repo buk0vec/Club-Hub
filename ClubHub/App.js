@@ -48,6 +48,10 @@ import createAnimatedSwitchNavigator from 'react-navigation-animated-switch';
 import {Transition} from 'react-native-reanimated'
 
 import { Provider as PaperProvider } from 'react-native-paper';
+import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
+import Icon from 'react-native-vector-icons/AntDesign'
+
+
 
 const MyClubsNavigator = createStackNavigator({
   MyClubs: {screen: MyClubsScreen, navigationOptions: {header: null}},
@@ -60,10 +64,16 @@ const DetailsNavigator = createStackNavigator({
     ClubDescrScreen: {screen: ClubDescrScreen},
 });
 
-const TabNavigator = createBottomTabNavigator({
-  MyClubs: MyClubsNavigator,
-  ClubDirectory: DetailsNavigator,
-  Settings: {screen: SettingsScreen},
+const TabNavigator = createMaterialBottomTabNavigator({
+  MyClubs: {screen: MyClubsNavigator, navigationOptions:{
+    tabBarIcon: ({focused}) =><Icon name="user" size={20} color={focused ? '#FFF' : '#DACE91'}/>,
+  }},
+  ClubDirectory: {screen: DetailsNavigator, navigationOptions:{
+    tabBarIcon: ({focused}) =><Icon name="find" size={20} color={focused ? '#FFF' : '#DACE91'}/>,
+  }},
+  Settings: {screen: SettingsScreen, navigationOptions:{
+    tabBarIcon: ({focused}) =><Icon name="tool" size={20} color={focused ? '#FFF' : '#DACE91'}/>,
+  }},
 },{
 	tabBarOptions:{
     activeTintColor: '#FFFFFF',
@@ -77,7 +87,7 @@ const TabNavigator = createBottomTabNavigator({
 
 const AuthNavigator = createStackNavigator({
   SignIn: {screen: SignInScreen, navigationOptions: {header: null}},
-  SignUp: {screen: SignUpScreen, path: 'signup'}
+  SignUp: {screen: SignUpScreen, path: 'signup', navigationOptions: {header: null}}
 }, {
   initialRouteName: 'SignIn'
 });
@@ -139,7 +149,9 @@ class AppContainer extends React.Component {
 			<Provider store={store}>
         <ReactReduxFirebaseProvider {...rrfProps}>
           <PersistGate loading={<PersistLoadingScreen />} persistor={persistor} >
-            <PaperProvider>
+            <PaperProvider settings={{
+              icon: props => <Icon {...props} />
+            }}>
 				      <Navigation ref={navigatorRef => {
                 NavigationService.setTopLevelNavigator(navigatorRef);
               }}
