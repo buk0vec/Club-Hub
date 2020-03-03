@@ -8,13 +8,16 @@ import React from 'react';
 import {
 	View,
 	Text,
-	TextInput,
 	Login,
-	Button,
 	YellowBox,
 	Keyboard,
-	ScrollView
+	ScrollView,
 } from 'react-native';
+
+import {
+	TextInput,
+	Button
+} from 'react-native-paper';
 
 import { signUp, changeSignUpError } from '../redux/actions'
 import { compose } from 'redux';
@@ -23,6 +26,8 @@ import { withFirebase } from 'react-redux-firebase'
 import { store } from '../redux/store'
 import NavigationService from './NavigationService'
 import { styles } from './Styles' //Styling for components
+import Logo from '../components/Logo'
+import Icon from 'react-native-vector-icons/AntDesign';
 
 class SignUpScreen extends React.Component {
 	//Sets default state, and if there was a username and password in the signin form beforehand it carries it over to the signup form
@@ -117,20 +122,17 @@ class SignUpScreen extends React.Component {
 		
 		return(
 			<ScrollView>
-				<Text style={styles.mainText}>Sign Up!</Text>
-				<Text style={styles.loginText}>First Name</Text>
-				<TextInput placeholder='ex. Joe' textContentType='givenName' autoFocus={false} 
+				<Icon.Button name="left" color="#000000" backgroundColor="#FFFFFF" onPress={() => this.props.navigation.navigate("SignIn")}>Back</Icon.Button>
+				<Logo />
+				<TextInput style={{backgroundColor: 'transparent'}} label='First Name' placeholder='ex. Joe' textContentType='givenName' autoFocus={false} 
 					onChangeText={text => this.onFirstNameChange(text)}/>
-					<Text style={styles.loginText}>Last Name</Text>
-				<TextInput placeholder='ex. Schmoe' textContentType='familyName' autoFocus={false} 
+				<TextInput style={{backgroundColor: 'transparent'}} label='Last Name' placeholder='ex. Schmoe' textContentType='familyName' autoFocus={false} 
 					onChangeText={text => this.onLastNameChange(text)}/>
-				<Text style={styles.loginText}>Email</Text>
-				<TextInput placeholder='ex. devon@sux.com' value={this.state.email} textContentType='emailAddress' autoFocus={false} 
+				<TextInput style={{backgroundColor: 'transparent'}} label='Email' placeholder='ex. devon@sux.com' value={this.state.email} textContentType='emailAddress' autoFocus={false} 
 					onChangeText={text => this.onEmailChange(text)}/>
-				<Text style={styles.loginText}>Password</Text>
-				<TextInput placeholder='Password...' textContentType='password' value={this.state.password} secureTextEntry={true} autoFocus={false} 
+				<TextInput style={{backgroundColor: 'transparent'}} label='Password' placeholder='Password...' textContentType='password' value={this.state.password} secureTextEntry={true} autoFocus={false} 
 					onChangeText={text => this.onPasswordChange(text)}/>
-				<Button color = "#6600bb"title='Sign up!' onPress={() => this.onLoginPress()} disabled={this.state.buttonDisable}/>
+				<Button color = "#6600bb" onPress={() => this.onLoginPress()} disabled={this.state.buttonDisable}>Sign Up</Button>
 				{this.state.signUpError ? <Text style={styles.errorText}>{this.state.signUpError}</Text> : null}
 			</ScrollView>
 		)

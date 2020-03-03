@@ -90,9 +90,9 @@ class SignInScreen extends React.Component {
 		return(
 			<View style={{flex: 1, justifyContent: 'center'}}>
 				<Logo />
-				<TextInput mode='outlined' label='Email' placeholder='ex. devon@sux.com' autoFocus={false} textContentType='emailAddress' 
+				<TextInput style={{backgroundColor: 'transparent'}} label='Email' placeholder='ex. devon@sux.com' autoFocus={false} textContentType='emailAddress' 
 					onChangeText={text => this.onEmailChange(text)}/>
-				<TextInput mode='outlined' label='Password' placeholder='Password...' textContentType='password' secureTextEntry={true} autoFocus={false} 
+				<TextInput style={{backgroundColor: 'transparent'}} label='Password' placeholder='Password...' textContentType='password' secureTextEntry={true} autoFocus={false} 
 					onChangeText={text => this.onPasswordChange(text)}/>
 				<Button color="#6600bb" onPress={() => this.onLoginPress()} disabled={this.state.buttonDisable}>Sign In</Button>
 				<Button color="#6600bb" onPress={() => this.props.navigation.navigate("SignUp", {
