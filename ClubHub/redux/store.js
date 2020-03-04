@@ -4,6 +4,7 @@
 	TODO: Add filter to prevent authError from re-appearing
 */
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
+
 import fb from './fb';
 import thunk from 'redux-thunk';
 import { reduxFirestore, getFirestore, firestoreReducer } from 'redux-firestore'

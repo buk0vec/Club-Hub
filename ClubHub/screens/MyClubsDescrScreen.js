@@ -63,7 +63,7 @@ class MyClubsDescrScreen extends React.Component {
     let members = this.props.club.members;
     console.log("Members:", members)
     return <Button color="#7700ee" title='Leave Club'
-    onPress={() => leaveClub({club:store.getState().clubs.descrId}).then(() => this.props.navigation.navigate("MyClubs")).catch((error)=>console.log(error))}/>;
+    onPress={() => leaveClub({club:store.getState().clubs.mcDescrId}).then(() => this.props.navigation.navigate("MyClubs")).catch((error)=>console.log(error))}/>;
   }
   //Render the bitty
   render() {
