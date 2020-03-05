@@ -4,6 +4,7 @@
 	TODO: Add filter to prevent authError from re-appearing
 */
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
+
 import fb from './fb';
 import thunk from 'redux-thunk';
 import { reduxFirestore, getFirestore, firestoreReducer } from 'redux-firestore'
@@ -42,10 +43,10 @@ function clubReducer(state = initialState, payload) {
 	switch(payload.type){
 		case SET_DESCR_ID:
 			console.log("ID_SET: ", payload.id);
-			return Object.assign({}, state, {descrId: payload.id}) //Changes state.clubs.descrId
+			return {...state, descrId: payload.id} //Changes state.clubs.descrId
 		case SET_MC_DESCR_ID:
 			console.log("MC_ID_SET: ", payload.id);
-			return Object.assign({}, state, {mcDescrId: payload.id})
+			return {...state, mcDescrId: payload.id}
 	} 
 	return state;
 }
