@@ -63,7 +63,7 @@ class MyClubsDescrScreen extends React.Component {
     let members = this.props.club.members;
     console.log("Members:", members)
     return <Button color="#7700ee" title='Leave Club'
-    onPress={() => leaveClub({club:store.getState().clubs.descrId}).then(() => this.props.navigation.navigate("MyClubs")).catch((error)=>console.log(error))}/>;
+    onPress={() => leaveClub({club: this.props.id}).then(() => this.props.navigation.navigate("MyClubs")).catch((error)=>console.log(error))}/>;
   }
   //Render the bitty
   render() {
@@ -90,7 +90,8 @@ class MyClubsDescrScreen extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    club: state.firestore.data.clubs[store.getState().clubs.mcDescrId],
+    club: state.firestore.data.clubs[state.clubs.mcDescrId],
+    id: state.clubs.mcDescrId,
     auth: state.firebase.auth
   }
 }

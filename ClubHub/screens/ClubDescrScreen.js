@@ -14,6 +14,7 @@ import {
   RefreshControl,
 } from 'react-native';
 
+import {ActivityIndicator} from 'react-native-paper'
 import { ScrollView } from 'react-navigation';
 
 import * as firebase from 'firebase';
@@ -21,7 +22,7 @@ import fb from '../redux/fb';
 import 'firebase/firestore';
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { firestoreConnect } from 'react-redux-firebase'
+import { firestoreConnect, isLoaded } from 'react-redux-firebase'
 import { store } from '../redux/store'
 import { styles } from './Styles.js' //Styling for components
 
@@ -35,39 +36,46 @@ class ClubDescrScreen extends React.Component {
       'Setting a timer'
     ];
   }
+  componentDidMount(){
+    console.log("Club,", this.props.clubQuery[0])
+  }
   //Separator component, just for styling
   Separator() {
     return <View style={styles.separator} />;
   }
+
   TogglingButton(){
     var joinClub = fb.functions().httpsCallable('joinClub');
     var leaveClub = fb.functions().httpsCallable('leaveClub');
-    let members = this.props.club.members;
+    let members = this.props.clubQuery[0].members;
     console.log("Members:", members)
     if(members.includes(this.props.auth.uid)){
       return <Button color="#7700ee" title='Leave Club'
-        onPress={() => leaveClub({club:store.getState().clubs.descrId}).catch((error)=>console.log(error))}/>;
+        onPress={() => leaveClub({club: this.props.id}).catch((error)=>console.log(error))}/>;
     }else{
       return <Button color="#7700ee" title='Join Club'
-        onPress={() => joinClub({club:store.getState().clubs.descrId}).catch((error)=>console.log(error))}/>;
+        onPress={() => joinClub({club: this.props.id}).catch((error)=>console.log(error))}/>;
     }
   }
   //Render the bitty
   render() {
+
     //If the club info is loading, display loading text. Else, display data
-    if(!this.props.club){
+    if(!isLoaded(this.props.clubQuery) || this.props.clubQuery[0].id != this.props.navigation.getParam('id')){
       return( 
-        <View><Text style={styles.clubText}>Loading...</Text></View>
+        <View><ActivityIndicator animating={true} /></View>
       );
     }
+    
     else {
+      let club = this.props.clubQuery[0];
       return (
        <ScrollView>
-        <Text style={styles.clubText}>{this.props.club.clubName}</Text>
-        <Text style={styles.clubText}>When: {this.props.club.when}</Text>
-        <Text style={styles.clubText}>In Room: {this.props.club.roomNumber}</Text>
-        <Text style={styles.clubText}>On: {this.props.club.day}</Text>
-        <Text style={styles.clubText}>Description: {this.props.club.shortDesc}</Text>
+        <Text style={styles.clubText}>{club.clubName}</Text>
+        <Text style={styles.clubText}>When: {club.when}</Text>
+        <Text style={styles.clubText}>In Room: {club.roomNumber}</Text>
+        <Text style={styles.clubText}>On: {club.day}</Text>
+        <Text style={styles.clubText}>Description: {club.shortDesc}</Text>
         {this.TogglingButton()}
       </ScrollView>
       )
@@ -77,13 +85,14 @@ class ClubDescrScreen extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    club: state.firestore.data.clubs[store.getState().clubs.descrId],
+    clubQuery: state.firestore.ordered.descrClub,
+    id: state.clubs.descrId,
     auth: state.firebase.auth
   }
 }
 
 export default compose(
-  firestoreConnect(() => ['clubs']),
+  firestoreConnect((props) => [{collection: 'clubs', doc: props.navigation.getParam('id'), storeAs: 'descrClub'}]),
   connect(mapStateToProps)
 )(ClubDescrScreen);
 

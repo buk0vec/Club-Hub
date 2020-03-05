@@ -37,11 +37,11 @@ class ClubDirectoryScreen extends React.Component {
   }
   //Runs when one of the clubs is pressed, sets descrId in the store to the ID
   //of the pressed club so ClubDescrId can take it in
-  onClubPress(item){
+  onClubPress(item, index){
     console.log("Running setDescrId");
     this.props.setDescrId(item.id);
     console.log('Store ID state!', store.getState().clubs.descrId);
-    this.props.navigation.navigate("ClubDescrScreen"); //Get further!
+    this.props.navigation.navigate("ClubDescrScreen", {id: item.id}); //Get further!
   }
   //Style class
   Separator() {
@@ -76,6 +76,7 @@ class ClubDirectoryScreen extends React.Component {
         <Text style={styles.mainText}>Club Directory</Text>
         {this.Separator()}
         {ClubList}
+        {this.Separator()}
       </View>
     );
   }
@@ -84,7 +85,10 @@ class ClubDirectoryScreen extends React.Component {
 //Makes it so the clubs collection is sent to this.props.clubs
 function mapStateToProps(state){
   return {
-    clubs: state.firestore.ordered.clubs,
+    clubs1: state.firestore.ordered.clubs,
+    firestore: state.firestore,
+    clubs2: state.firestore.data['allClubs'],
+    clubs: state.firestore.ordered.allClubs
   }
 }
 //Makes it so you can use setDescrId(id) by calling this.props.setDescrId(id)
@@ -98,5 +102,5 @@ function mapDispatchToProps(dispatch) {
 }
 //Connects the firestore to the clubs collection and registers the two map functions to the store
 export default compose(
-  firestoreConnect(() => ['clubs']), 
+  firestoreConnect([{collection: 'clubs', storeAs: 'allClubs', orderBy: 'clubName'}]), 
   connect(mapStateToProps, mapDispatchToProps))(ClubDirectoryScreen);
