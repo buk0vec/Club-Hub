@@ -37,13 +37,13 @@ class ClubDescrScreen extends React.Component {
     ];
   }
   componentDidMount(){
-    console.log("Club,", this.props.clubQuery[0])
+    //console.log("Club,", this.props.clubQuery[0])
   }
   //Separator component, just for styling
   Separator() {
     return <View style={styles.separator} />;
   }
-
+  
   TogglingButton(){
     var joinClub = fb.functions().httpsCallable('joinClub');
     var leaveClub = fb.functions().httpsCallable('leaveClub');
@@ -61,13 +61,18 @@ class ClubDescrScreen extends React.Component {
   render() {
 
     //If the club info is loading, display loading text. Else, display data
-    if(!isLoaded(this.props.clubQuery) || this.props.clubQuery[0].id != this.props.navigation.getParam('id')){
+    if(!isLoaded(this.props.clubQuery)){
       return( 
         <View><ActivityIndicator animating={true} /></View>
       );
     }
-    
+    else if (this.props.clubQuery[0].id != this.props.navigation.getParam('id')) {
+      return( 
+        <View><ActivityIndicator animating={true} /></View>
+      );
+    }
     else {
+      console.log("Descrrednder")
       let club = this.props.clubQuery[0];
       return (
        <ScrollView>
