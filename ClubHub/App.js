@@ -55,13 +55,13 @@ import Icon from 'react-native-vector-icons/AntDesign'
 
 const MyClubsNavigator = createStackNavigator({
   MyClubs: {screen: MyClubsScreen, navigationOptions: {header: null}},
-  MyClubsDescr: {screen: MyClubsDescrScreen}
+    MyClubsDescr: {screen: MyClubsDescrScreen, navigationOptions: {header: null}},
 })
 
 
 const DetailsNavigator = createStackNavigator({
 	ClubDirectory: {screen: ClubDirectoryScreen, navigationOptions: {header: null}},
-    ClubDescrScreen: {screen: ClubDescrScreen},
+    ClubDescrScreen: {screen: ClubDescrScreen, navigationOptions: {header: null}},
 });
 
 const TabNavigator = createMaterialBottomTabNavigator({

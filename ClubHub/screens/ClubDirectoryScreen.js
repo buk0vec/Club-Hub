@@ -57,9 +57,10 @@ class ClubDirectoryScreen extends React.Component {
     //For each item in this.props.clubs, create a button with the club name. When it's pressed, pass the club into onClubPress()
     else {
       ClubList = <FlatList 
-          data={this.props.clubs} 
-          renderItem={({item}) => (
-            <View>
+        data={this.props.clubs}
+        style={styles.list} 
+        renderItem={({item}) => (
+          <View>
             <TouchableOpacity
               style={styles.button}
               onPress={() => this.onClubPress(item)}
@@ -67,9 +68,9 @@ class ClubDirectoryScreen extends React.Component {
               <Text style={styles.clubText}>{item.clubName}</Text>
             </TouchableOpacity>
             {this.Separator()}
-            </View>
-          )}
-          />;
+          </View>
+        )}
+      />;
     }
     return (
       <View>
@@ -97,7 +98,6 @@ function mapDispatchToProps(dispatch) {
     setDescrId: id => {
       dispatch(setDescrId(id))
     }
-    
   }
 }
 //Connects the firestore to the clubs collection and registers the two map functions to the store

@@ -4,18 +4,19 @@
 */
 import React from 'react';
 import {
-	Text,
 	View,
 	Button,
-  FlatList,
-  YellowBox,
-  TouchableOpacity,
-  Alert,
-  RefreshControl,
+  	FlatList,
+  	YellowBox,
+  	TouchableOpacity,
+  	Alert,
+	RefreshControl,
 } from 'react-native';
 
 import {ActivityIndicator} from 'react-native-paper'
 import { ScrollView } from 'react-navigation';
+import { Appbar, Text } from 'react-native-paper';
+import  Icon from 'react-native-vector-icons/AntDesign';
 
 import * as firebase from 'firebase';
 import fb from '../redux/fb';
@@ -59,7 +60,7 @@ class ClubDescrScreen extends React.Component {
   }
   //Render the bitty
   render() {
-
+    var haveClub = true; //for testing add/plus
     //If the club info is loading, display loading text. Else, display data
     if(!isLoaded(this.props.clubQuery)){
       return( 
@@ -71,21 +72,28 @@ class ClubDescrScreen extends React.Component {
         <View><ActivityIndicator animating={true} /></View>
       );
     }
-    else {
-      console.log("Descrrednder")
-      let club = this.props.clubQuery[0];
-      return (
-       <ScrollView>
-        <Text style={styles.clubText}>{club.clubName}</Text>
-        <Text style={styles.clubText}>When: {club.when}</Text>
-        <Text style={styles.clubText}>In Room: {club.roomNumber}</Text>
-        <Text style={styles.clubText}>On: {club.day}</Text>
-        <Text style={styles.clubText}>Description: {club.shortDesc}</Text>
-        {this.TogglingButton()}
-      </ScrollView>
-      )
-    }
-  }
+    	else {
+        let club = this.props.clubQuery[0];
+      		return (
+      			<View>
+   					<Appbar.Header>
+   						<Appbar.Action icon="left" onPress={() => this.props.navigation.navigate("ClubDirectory")} />
+  						<Appbar.Content
+  							title= {
+  								(club.clubName.length > 20) 
+  								? club.abbrevName
+  								: club.clubName}
+  							//title={this.props.club.clubName}
+  						/>
+  						<Appbar.Action icon={haveClub ? "minus" : "plus"}/>
+   					</Appbar.Header>
+        			<Text style={styles.clubText}>Rm. {club.roomNumber}</Text>
+        			<Text style={styles.clubText}>We meet at {club.when} every {club.day}</Text>
+   					<Text style={styles.clubText}>{club.shortDesc}</Text>
+   				</View>
+        	)
+		}
+	}
 }
 
 function mapStateToProps(state) {

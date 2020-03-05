@@ -47,4 +47,7 @@ export const styles = StyleSheet.create({
 		textAlign: 'center',
 		flex: 1
 	},
+	list: {
+		bottom: 65,
+	}
 });
