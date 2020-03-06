@@ -36,26 +36,32 @@ class ClubDescrScreen extends React.Component {
     console.ignoredYellowBox = [
       'Setting a timer'
     ];
+    this.changeClubStatus = this.changeClubStatus.bind(this);
+    this.state = {
+      membershipSwitched: false
+    }
   }
-  componentDidMount(){
-    //console.log("Club,", this.props.clubQuery[0])
+  componentDidUpdate(){
+    if(this.props.clubQuery[0].members.includes(this.props.auth.uid) && this.state.membershipSwitched) {
+      this.setState({membershipSwitched: false})
+    }
   }
   //Separator component, just for styling
   Separator() {
     return <View style={styles.separator} />;
   }
-  
-  TogglingButton(){
+  changeClubStatus() {
     var joinClub = fb.functions().httpsCallable('joinClub');
     var leaveClub = fb.functions().httpsCallable('leaveClub');
     let members = this.props.clubQuery[0].members;
     console.log("Members:", members)
     if(members.includes(this.props.auth.uid)){
-      return <Button color="#7700ee" title='Leave Club'
-        onPress={() => leaveClub({club: this.props.id}).catch((error)=>console.log(error))}/>;
-    }else{
-      return <Button color="#7700ee" title='Join Club'
-        onPress={() => joinClub({club: this.props.id}).catch((error)=>console.log(error))}/>;
+      leaveClub({club: this.props.id}).catch((error)=>console.log(error));
+      this.setState({membershipSwitched: true})
+    }
+    else{
+      joinClub({club: this.props.id}).catch((error)=>console.log(error));
+      this.setState({membershipSwitched: true})
     }
   }
   //Render the bitty
@@ -85,7 +91,7 @@ class ClubDescrScreen extends React.Component {
   								: club.clubName}
   							//title={this.props.club.clubName}
   						/>
-  						<Appbar.Action icon={haveClub ? "minus" : "plus"}/>
+  						<Appbar.Action icon={club.members.includes(this.props.auth.uid) || this.state.membershipSwitched ? "minus" : "plus"} onPress={() => this.changeClubStatus()}/>
    					</Appbar.Header>
         			<Text style={styles.clubText}>Rm. {club.roomNumber}</Text>
         			<Text style={styles.clubText}>We meet at {club.when} every {club.day}</Text>

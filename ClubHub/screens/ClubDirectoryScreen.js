@@ -73,7 +73,7 @@ class ClubDirectoryScreen extends React.Component {
       />;
     }
     return (
-      <View>
+      <View style={{flex: 1}}>
         <Text style={styles.mainText}>Club Directory</Text>
         {this.Separator()}
         {ClubList}

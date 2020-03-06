@@ -15,6 +15,9 @@ import {
   RefreshControl,
 } from 'react-native';
 
+import {
+  Appbar
+} from 'react-native-paper'
 import { ScrollView } from 'react-navigation';
 
 import * as firebase from 'firebase';
@@ -65,6 +68,14 @@ class MyClubsDescrScreen extends React.Component {
     return <Button color="#7700ee" title='Leave Club'
     onPress={() => leaveClub({club: this.props.id}).then(() => this.props.navigation.navigate("MyClubs")).catch((error)=>console.log(error))}/>;
   }
+  changeClubStatus() {
+    var leaveClub = fb.functions().httpsCallable('leaveClub');
+    let members = this.props.club.members;
+    console.log("Members:", members)
+    leaveClub({club: this.props.id}).catch((error)=>console.log(error));
+    this.props.navigation.navigate("MyClubs");
+  }
+  //Rende
   //Render the bitty
   render() {
     //If the club info is loading, display loading text. Else, display data
@@ -74,14 +85,24 @@ class MyClubsDescrScreen extends React.Component {
       );
     }
     else {
+      let club = this.props.club
       return (
        <ScrollView>
+          <Appbar.Header>
+            <Appbar.Action icon="left" onPress={() => this.props.navigation.navigate("MyClubs")} />
+            <Appbar.Content
+              title= {
+                (club.clubName.length > 20) 
+                ? club.abbrevName
+                : club.clubName}
+            />
+            <Appbar.Action icon={"minus"} onPress={() => this.changeClubStatus()}/>
+            </Appbar.Header>
         <Text style={styles.clubText}>{this.props.club.clubName}</Text>
         <Text style={styles.clubText}>When: {this.props.club.when}</Text>
         <Text style={styles.clubText}>In Room: {this.props.club.roomNumber}</Text>
         <Text style={styles.clubText}>On: {this.props.club.day}</Text>
         <Text style={styles.clubText}>Description: {this.props.club.shortDesc}</Text>
-        {this.TogglingButton()}
       </ScrollView>
       )
     }
