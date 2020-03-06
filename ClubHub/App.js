@@ -136,10 +136,10 @@ const rrfProps = {
 
 //This in theory shouldn't change, <Provider> allows access to store and <ReactReduxFirebaseProvider> allows fb access, <PersistGate> allows for 
 //persistent data.
-class AppContainer extends React.Component {
+export default class AppContainer extends React.Component {
   constructor(props) {
     super(props);
-    YellowBox.ignoreWarnings(['Setting a timer']);
+    YellowBox.ignoreWarnings(['Setting a timer', 'Require cycle']);
     console.ignoredYellowBox = [
       'Setting a timer'
     ];
@@ -164,7 +164,3 @@ class AppContainer extends React.Component {
 	}
 }
 
-export default () => {
-  const prefix = 'clubhub://';
-  return <AppContainer uriPrefix={prefix} />
-}
