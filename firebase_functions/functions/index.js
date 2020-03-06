@@ -19,6 +19,20 @@ exports.joinClub = functions.https.onCall((data,context)=>{
     throw error;
   });
 });
+
+exports.onClubCreation = functions.firestore.document('clubs/{clubID}').onCreate((snap, context)=>{
+  return db.doc('clubs/'+context.params.clubID).update({
+    members:[]
+  }).catch(function(error) {
+    console.log('There has been a problem with your fetch operation: ' + error.message);
+    // ADD THIS THROW error
+    throw error;
+  });
+});
+
+exports.onUserCreation = functions.firestore.document('users/{uid}').onCreate((snap, context)=>{
+});
+
 exports.leaveClub = functions.https.onCall((data,context)=>{
   
   const club = data.club;
