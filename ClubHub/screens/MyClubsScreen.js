@@ -56,8 +56,9 @@ export class MyClubsScreen extends React.Component {
     	//console.log("Ok, so userclubs is no longer undefined")
     	//console.log('type', typeof(this.props.userClubs))
     	//console.log("its now", this.props.userClubs)
+      console.log("MyClubs is rerendering")
         ClubList = <FlatList 
-          data={Object.values(this.props.userClubs)} 
+          data={Object.values(this.props.userClubs).filter((obj) => obj)} 
           renderItem={({item, index}) => (
             <View>
             <TouchableOpacity
@@ -71,7 +72,6 @@ export class MyClubsScreen extends React.Component {
           keyExtractor={(item, index) => index.toString()}
           />;
     }
-    console.log("Rerender")
     return (
       <View>
         <Text style={styles.mainText}>My Clubs</Text>

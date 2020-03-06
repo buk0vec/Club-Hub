@@ -48,6 +48,6 @@ export const styles = StyleSheet.create({
 		flex: 1
 	},
 	list: {
-		bottom: 65,
+		//bottom: 65,
 	}
 });
