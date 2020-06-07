@@ -22,7 +22,8 @@ import { Appbar, TextInput, Text, Button } from 'react-native-paper'
 import Logo from '../components/Logo';
 
 class SignInScreen extends React.Component {
-	constructor(props){
+	//Sets default state, ignores warnings
+	constructor(props) {
 		super(props);
 		this.state = {
 			email: '',
@@ -34,21 +35,21 @@ class SignInScreen extends React.Component {
 		console.ignoredYellowBox = ['Setting a timer'];
 	}
 	//All these functions are just to update the state when the textinput changes
-	onEmailChange(newEmail){
+	onEmailChange(newEmail) {
 		this.setState(prevState => ({
 			...prevState,
 			email: newEmail
 		}));
 	}
 
-	onPasswordChange(newPass){
+	onPasswordChange(newPass) {
 		this.setState(prevState => ({
 			...prevState,
 			password: newPass
 		}));
 	}
 	//When login is pressed, dismiss keyboard and log in
-	onLoginPress(){
+	onLoginPress() {
 		Keyboard.dismiss();
 		this.setState(prevState => ({
 			...prevState,
@@ -77,8 +78,9 @@ class SignInScreen extends React.Component {
 			}))
 		});
 	}
+	//This prevents jumping the gun on navigation, it's an intentional delay to avoid errors until there is a real UID logged in
 	waitUntilNavigate() {
-		if(typeof store.getState().firebase.auth.uid !== 'undefined') {
+		if (typeof store.getState().firebase.auth.uid !== 'undefined') {
 			console.log("Navigating...")
 			NavigationService.navigate("MyClubs");
 		}
@@ -86,24 +88,26 @@ class SignInScreen extends React.Component {
 			setTimeout(this.waitUntilNavigate, 250)
 		}
 	}
-	render(){
-		return(
-			<View style={{flex: 1, justifyContent: 'center'}}>
+	//Normal render with inputs, buttons, and auth error display
+	render() {
+		return (
+			<View style={{ flex: 1, justifyContent: 'center' }}>
 				<Logo />
-				<TextInput style={{backgroundColor: 'transparent'}} label='Email' placeholder='ex. devon@sux.com' autoFocus={false} textContentType='emailAddress' 
-					onChangeText={text => this.onEmailChange(text)}/>
-				<TextInput style={{backgroundColor: 'transparent'}} label='Password' placeholder='Password...' textContentType='password' secureTextEntry={true} autoFocus={false} 
-					onChangeText={text => this.onPasswordChange(text)}/>
+				<TextInput style={{ backgroundColor: 'transparent' }} label='Email' placeholder='ex. devon@sux.com' autoFocus={false} textContentType='emailAddress'
+					onChangeText={text => this.onEmailChange(text)} />
+				<TextInput style={{ backgroundColor: 'transparent' }} label='Password' placeholder='Password...' textContentType='password' secureTextEntry={true} autoFocus={false}
+					onChangeText={text => this.onPasswordChange(text)} />
 				<Button color="#6600bb" onPress={() => this.onLoginPress()} disabled={this.state.buttonDisable}>Sign In</Button>
 				<Button color="#6600bb" onPress={() => this.props.navigation.navigate("SignUp", {
 					inputEmail: this.state.email,
 					inputPassword: this.state.password
 				})}>Create a New Account</Button>
-				<View style={{flex: 1}}></View>
-				{this.state.authError ? <Text style={styles.errorText}>{this.state.authError}</Text> : <View style={{flex: 1}}></View>}
+				<View style={{ flex: 1 }}></View>
+				{this.state.authError ? <Text style={styles.errorText}>{this.state.authError}</Text> : <View style={{ flex: 1 }}></View>}
 			</View>
 		)
 	}
 }
 
+//HOC export
 export default compose(withFirebase)(SignInScreen)

@@ -5,9 +5,9 @@
 
 import React from 'react';
 import {
-	Text,
-	View,
-	Button,
+  Text,
+  View,
+  Button,
   YellowBox,
   TouchableOpacity,
   Alert,
@@ -27,6 +27,7 @@ import { store } from '../redux/store' //Store import for debug
 import { styles } from './Styles.js' //Styling for components
 
 class ClubDirectoryScreen extends React.Component {
+  //Normal constructor things, binding functions and ignoring warnings
   constructor(props) {
     super(props);
     YellowBox.ignoreWarnings(['Setting a timer']);
@@ -37,11 +38,11 @@ class ClubDirectoryScreen extends React.Component {
   }
   //Runs when one of the clubs is pressed, sets descrId in the store to the ID
   //of the pressed club so ClubDescrId can take it in
-  onClubPress(item, index){
+  onClubPress(item, index) {
     console.log("Running setDescrId");
     this.props.setDescrId(item.id);
     console.log('Store ID state!', store.getState().clubs.descrId);
-    this.props.navigation.navigate("ClubDescrScreen", {id: item.id}); //Get further!
+    this.props.navigation.navigate("ClubDescrScreen", { id: item.id }); //Get further!
   }
   //Style class
   Separator() {
@@ -51,15 +52,15 @@ class ClubDirectoryScreen extends React.Component {
   render() {
     let ClubList;
     //If the clubs haven't been grabbed yet, display loading text
-    if(!this.props.clubs){
+    if (!this.props.clubs) {
       ClubList = <Text style={styles.clubText}>Loading...</Text>;
     }
     //For each item in this.props.clubs, create a button with the club name. When it's pressed, pass the club into onClubPress()
     else {
-      ClubList = <FlatList 
+      ClubList = <FlatList
         data={this.props.clubs}
-        style={styles.list} 
-        renderItem={({item}) => (
+        style={styles.list}
+        renderItem={({ item }) => (
           <View>
             <TouchableOpacity
               style={styles.button}
@@ -73,7 +74,7 @@ class ClubDirectoryScreen extends React.Component {
       />;
     }
     return (
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <Text style={styles.mainText}>Club Directory</Text>
         {this.Separator()}
         {ClubList}
@@ -84,7 +85,7 @@ class ClubDirectoryScreen extends React.Component {
 }
 
 //Makes it so the clubs collection is sent to this.props.clubs
-function mapStateToProps(state){
+function mapStateToProps(state) {
   return {
     clubs1: state.firestore.ordered.clubs,
     firestore: state.firestore,
@@ -102,5 +103,5 @@ function mapDispatchToProps(dispatch) {
 }
 //Connects the firestore to the clubs collection and registers the two map functions to the store
 export default compose(
-  firestoreConnect([{collection: 'clubs', storeAs: 'allClubs', orderBy: 'clubName'}]), 
+  firestoreConnect([{ collection: 'clubs', storeAs: 'allClubs', orderBy: 'clubName' }]),
   connect(mapStateToProps, mapDispatchToProps))(ClubDirectoryScreen);

@@ -17,10 +17,10 @@ import {
   createAppContainer,
   createSwitchNavigator
 } from 'react-navigation';
-import { 
+import {
   createBottomTabNavigator,
 } from 'react-navigation-tabs';
-import { 
+import {
   createStackNavigator,
 } from 'react-navigation-stack';
 import * as firebase from 'firebase';
@@ -43,9 +43,9 @@ import { store, persistor } from './redux/store';
 import { Provider, connect } from 'react-redux'
 import { PersistGate } from 'redux-persist/lib/integration/react';
 
-import {zoomIn} from 'react-navigation-transitions';
+import { zoomIn } from 'react-navigation-transitions';
 import createAnimatedSwitchNavigator from 'react-navigation-animated-switch';
-import {Transition} from 'react-native-reanimated'
+import { Transition } from 'react-native-reanimated'
 
 import { Provider as PaperProvider } from 'react-native-paper';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
@@ -54,57 +54,63 @@ import Icon from 'react-native-vector-icons/AntDesign'
 
 
 const MyClubsNavigator = createStackNavigator({
-  MyClubs: {screen: MyClubsScreen, navigationOptions: {header: null}},
-    MyClubsDescr: {screen: MyClubsDescrScreen, navigationOptions: {header: null}},
+  MyClubs: { screen: MyClubsScreen, navigationOptions: { header: null } },
+  MyClubsDescr: { screen: MyClubsDescrScreen, navigationOptions: { header: null } },
 })
 
 
 const DetailsNavigator = createStackNavigator({
-	ClubDirectory: {screen: ClubDirectoryScreen, navigationOptions: {header: null}},
-    ClubDescrScreen: {screen: ClubDescrScreen, navigationOptions: {header: null}},
+  ClubDirectory: { screen: ClubDirectoryScreen, navigationOptions: { header: null } },
+  ClubDescrScreen: { screen: ClubDescrScreen, navigationOptions: { header: null } },
 });
 
 const TabNavigator = createMaterialBottomTabNavigator({
-  MyClubs: {screen: MyClubsNavigator, navigationOptions:{
-    tabBarIcon: ({focused}) =><Icon name="user" size={20} color={focused ? '#FFF' : '#DACE91'}/>,
-  }},
-  ClubDirectory: {screen: DetailsNavigator, navigationOptions:{
-    tabBarIcon: ({focused}) =><Icon name="find" size={20} color={focused ? '#FFF' : '#DACE91'}/>,
-  }},
-  Settings: {screen: SettingsScreen, navigationOptions:{
-    tabBarIcon: ({focused}) =><Icon name="tool" size={20} color={focused ? '#FFF' : '#DACE91'}/>,
-  }},
-},{
-	tabBarOptions:{
+  MyClubs: {
+    screen: MyClubsNavigator, navigationOptions: {
+      tabBarIcon: ({ focused }) => <Icon name="user" size={20} color={focused ? '#FFF' : '#DACE91'} />,
+    }
+  },
+  ClubDirectory: {
+    screen: DetailsNavigator, navigationOptions: {
+      tabBarIcon: ({ focused }) => <Icon name="find" size={20} color={focused ? '#FFF' : '#DACE91'} />,
+    }
+  },
+  Settings: {
+    screen: SettingsScreen, navigationOptions: {
+      tabBarIcon: ({ focused }) => <Icon name="tool" size={20} color={focused ? '#FFF' : '#DACE91'} />,
+    }
+  },
+}, {
+  tabBarOptions: {
     activeTintColor: '#FFFFFF',
-		activeBackgroundColor:'#8800FF',
+    activeBackgroundColor: '#8800FF',
     inactiveTintColor: '#8800FF',
-		labelStyle: {
-			fontSize: 20,
-		}
-	}
+    labelStyle: {
+      fontSize: 20,
+    }
+  }
 });
 
 const AuthNavigator = createStackNavigator({
-  SignIn: {screen: SignInScreen, navigationOptions: {header: null}},
-  SignUp: {screen: SignUpScreen, path: 'signup', navigationOptions: {header: null}}
+  SignIn: { screen: SignInScreen, navigationOptions: { header: null } },
+  SignUp: { screen: SignUpScreen, path: 'signup', navigationOptions: { header: null } }
 }, {
   initialRouteName: 'SignIn'
 });
 
 const AuthLoadingNavigator = createStackNavigator({
-  AuthLoading: {screen: AuthLoadingScreen, navigationOptions: {header: null}}
+  AuthLoading: { screen: AuthLoadingScreen, navigationOptions: { header: null } }
 })
 
-//The idea with the navigation is to go to the splash screen, 
+//Splash screen while things load intially 
 const RootNavigator = createAnimatedSwitchNavigator({
   AuthLoading: AuthLoadingNavigator,
   Auth: AuthNavigator,
   Tab: TabNavigator
 },
-{
-  initialRouteName: 'AuthLoading',
-   transition: (
+  {
+    initialRouteName: 'AuthLoading',
+    transition: (
       <Transition.Together>
         <Transition.Out
           type="slide-bottom"
@@ -114,7 +120,7 @@ const RootNavigator = createAnimatedSwitchNavigator({
         <Transition.In type="fade" durationMs={500} />
       </Transition.Together>
     ),
-}
+  }
 );
 
 let Navigation = createAppContainer(RootNavigator);
@@ -144,23 +150,24 @@ export default class AppContainer extends React.Component {
       'Setting a timer'
     ];
   }
-	render() {
-		return (
-			<Provider store={store}>
+  //Initally loads persitance loading screen, then goes into the main navigation flow
+  render() {
+    return (
+      <Provider store={store}>
         <ReactReduxFirebaseProvider {...rrfProps}>
           <PersistGate loading={<PersistLoadingScreen />} persistor={persistor} >
             <PaperProvider settings={{
               icon: props => <Icon {...props} />
             }}>
-				      <Navigation ref={navigatorRef => {
+              <Navigation ref={navigatorRef => {
                 NavigationService.setTopLevelNavigator(navigatorRef);
               }}
               />
             </PaperProvider>
-        </PersistGate>
+          </PersistGate>
         </ReactReduxFirebaseProvider>
-			</Provider>
-		)
-	}
+      </Provider>
+    )
+  }
 }
 

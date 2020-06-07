@@ -25,23 +25,23 @@ export const styles = StyleSheet.create({
 		backgroundColor: '#f5f5f5'
 	},
 	container: {
-    	flex: 1,
-    	justifyContent: 'center',
-    	alignItems: 'center',
-    	backgroundColor: '#8800ff'
-  	},
-  	//PersistLoading has different specs?
-  	PLmainText: {
-    	fontSize: 50,
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: '#8800ff'
+	},
+	//PersistLoading has different specs?
+	PLmainText: {
+		fontSize: 50,
 		color: 'white'
-  	},
-  	nameText: {
-  		fontSize: 40,
-  	},
-  	loginText: {
-    	fontSize: 30
-  	},
-  	errorText: {
+	},
+	nameText: {
+		fontSize: 40,
+	},
+	loginText: {
+		fontSize: 30
+	},
+	errorText: {
 		fontSize: 25,
 		color: 'red',
 		textAlign: 'center',

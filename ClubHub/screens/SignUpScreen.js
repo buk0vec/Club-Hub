@@ -31,7 +31,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 
 class SignUpScreen extends React.Component {
 	//Sets default state, and if there was a username and password in the signin form beforehand it carries it over to the signup form
-	constructor(props){
+	constructor(props) {
 		super(props);
 		const inputEmail = this.props.navigation.getParam('inputEmail', '');
 		const inputPassword = this.props.navigation.getParam('inputPassword', '')
@@ -48,49 +48,51 @@ class SignUpScreen extends React.Component {
 		console.ignoredYellowBox = ['Setting a timer'];
 
 	}
-	//State updaters
-	onEmailChange(newEmail){
+	//State updaters (so much easier if we used hooks)
+	onEmailChange(newEmail) {
 		this.setState(prevState => ({
 			...prevState,
 			email: newEmail
 		}));
 	}
-	onPasswordChange(newPass){
+	onPasswordChange(newPass) {
 		this.setState(prevState => ({
 			...prevState,
 			password: newPass
 		}));
 	}
-	onFirstNameChange(newFirst){
+	onFirstNameChange(newFirst) {
 		this.setState(prevState => ({
 			...prevState,
 			firstName: newFirst
 		}));
 	}
-	onLastNameChange(newLast){
+	onLastNameChange(newLast) {
 		this.setState(prevState => ({
 			...prevState,
 			lastName: newLast
 		}));
 	}
 	//Checks to see if name has been entered, then signs them up if it all works out
-	onLoginPress(){
-		Keyboard.dismiss();
-		if(this.state.firstName == '' || this.state.lastName == '') {
+	onLoginPress() {
+		Keyboard.dismiss(); //Because the keyboard is annoying
+		//If no name is in
+		if (this.state.firstName == '' || this.state.lastName == '') {
 			this.setState(prevState => ({
 				...prevState,
 				signUpError: "You must input your name!"
 			}))
 			return;
 		}
+		//Disable re-pressing the button
 		this.setState(prevState => ({
 			...prevState,
 			buttonDisable: true
 		}))
 		//Use RRF's firebase instance to create a user
 		this.props.firebase.createUser(
-			{email: this.state.email, password: this.state.password},
-			{firstName: this.state.firstName, lastName: this.state.lastName}
+			{ email: this.state.email, password: this.state.password },
+			{ firstName: this.state.firstName, lastName: this.state.lastName }
 		).then(() => {
 			//Success, navigate and remove error state
 			console.log("Signed up!")
@@ -109,8 +111,9 @@ class SignUpScreen extends React.Component {
 			}))
 		})
 	}
-		waitUntilNavigate() {
-		if(typeof store.getState().firebase.auth.uid !== 'undefined') {
+	//Another navigation delay system
+	waitUntilNavigate() {
+		if (typeof store.getState().firebase.auth.uid !== 'undefined') {
 			console.log("Navigating...")
 			NavigationService.navigate("MyClubs");
 		}
@@ -118,21 +121,21 @@ class SignUpScreen extends React.Component {
 			setTimeout(this.waitUntilNavigate, 250)
 		}
 	}
-	render(){
-		
-		return(
+	render() {
+		//Just a sign up screen with inputs, logo, back button, sign up button, and a conditional error display
+		return (
 			<ScrollView>
 				<Icon.Button name="left" color="#000000" backgroundColor="#FFFFFF" onPress={() => this.props.navigation.navigate("SignIn")}>Back</Icon.Button>
 				<Logo />
-				<TextInput style={{backgroundColor: 'transparent'}} label='First Name' placeholder='ex. Joe' textContentType='givenName' autoFocus={false} 
-					onChangeText={text => this.onFirstNameChange(text)}/>
-				<TextInput style={{backgroundColor: 'transparent'}} label='Last Name' placeholder='ex. Schmoe' textContentType='familyName' autoFocus={false} 
-					onChangeText={text => this.onLastNameChange(text)}/>
-				<TextInput style={{backgroundColor: 'transparent'}} label='Email' placeholder='ex. devon@sux.com' value={this.state.email} textContentType='emailAddress' autoFocus={false} 
-					onChangeText={text => this.onEmailChange(text)}/>
-				<TextInput style={{backgroundColor: 'transparent'}} label='Password' placeholder='Password...' textContentType='password' value={this.state.password} secureTextEntry={true} autoFocus={false} 
-					onChangeText={text => this.onPasswordChange(text)}/>
-				<Button color = "#6600bb" onPress={() => this.onLoginPress()} disabled={this.state.buttonDisable}>Sign Up</Button>
+				<TextInput style={{ backgroundColor: 'transparent' }} label='First Name' placeholder='ex. Joe' textContentType='givenName' autoFocus={false}
+					onChangeText={text => this.onFirstNameChange(text)} />
+				<TextInput style={{ backgroundColor: 'transparent' }} label='Last Name' placeholder='ex. Schmoe' textContentType='familyName' autoFocus={false}
+					onChangeText={text => this.onLastNameChange(text)} />
+				<TextInput style={{ backgroundColor: 'transparent' }} label='Email' placeholder='ex. devon@sux.com' value={this.state.email} textContentType='emailAddress' autoFocus={false}
+					onChangeText={text => this.onEmailChange(text)} />
+				<TextInput style={{ backgroundColor: 'transparent' }} label='Password' placeholder='Password...' textContentType='password' value={this.state.password} secureTextEntry={true} autoFocus={false}
+					onChangeText={text => this.onPasswordChange(text)} />
+				<Button color="#6600bb" onPress={() => this.onLoginPress()} disabled={this.state.buttonDisable}>Sign Up</Button>
 				{this.state.signUpError ? <Text style={styles.errorText}>{this.state.signUpError}</Text> : null}
 			</ScrollView>
 		)

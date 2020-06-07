@@ -20,11 +20,12 @@ import { connect } from 'react-redux'
 import { styles } from './Styles.js' //Styling for components
 
 class SettingsScreen extends React.Component {
-  componentDidMount(){
+  //Debug
+  componentDidMount() {
     console.log("User data:", this.props.user)
   }
   onSignOutPress() {
-  	//Use RRF's signout
+    //Use RRF's signout
     this.props.firebase.logout();
     this.props.navigation.navigate("Auth");
   }
