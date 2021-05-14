@@ -1,7 +1,7 @@
 # Club-Hub
 Mobile app based in React Native for Projects in CS 2020.
 The goal of the app is for high schoolers to be able to find, learn about, and communicate with clubs easily.
-The MVP was never finished due to the team all going on their own ways
+
 ## Install
 1. Clone the repository
 2. Run `npm install` to install node modules
